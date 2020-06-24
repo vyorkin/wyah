@@ -33,6 +33,7 @@ library
                          Wyah.Chapter5.Type
                          Wyah.Chapter5.Eval
                          Wyah.Chapter5.Lexer
+                         Wyah.Chapter5.Parser
 
                        Sandbox.Prettyprint1
 
