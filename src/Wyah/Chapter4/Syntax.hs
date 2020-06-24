@@ -1,4 +1,4 @@
-module Wyah.Untyped.Syntax
+module Wyah.Chapter4.Syntax
   ( Expr(..)
   , Lit(..)
   , Name(..)

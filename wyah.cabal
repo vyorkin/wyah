@@ -23,10 +23,15 @@ tested-with:         GHC == 8.8.3
 library
   hs-source-dirs:      src
   exposed-modules:     Wyah
-                       Wyah.Untyped
-                         Wyah.Untyped.Syntax
-                         Wyah.Untyped.Pretty
-                         Wyah.Untyped.Eval
+                       Wyah.Chapter4
+                         Wyah.Chapter4.Syntax
+                         Wyah.Chapter4.Pretty
+                         Wyah.Chapter4.Eval
+
+                       Wyah.Chapter5
+                         Wyah.Chapter5.Syntax
+                         Wyah.Chapter5.Type
+                         Wyah.Chapter5.Eval
 
                        Sandbox.Prettyprint1
 

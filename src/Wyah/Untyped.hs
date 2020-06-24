@@ -1,3 +1,0 @@
-module Wyah.Untyped
-  (
-  ) where

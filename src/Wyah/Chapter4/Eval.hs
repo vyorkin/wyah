@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
-module Wyah.Untyped.Eval
+
+module Wyah.Chapter4.Eval
   ( Value(..)
   , Scope
   , Step
@@ -16,7 +17,7 @@ import qualified Data.Map as Map
 import Control.Monad.State (State, evalState, gets, modify)
 import Control.Monad.Writer (WriterT, runWriterT, tell)
 
-import Wyah.Untyped.Syntax (Expr(..), Lit(..), Name(..))
+import Wyah.Chapter4.Syntax (Expr(..), Lit(..), Name(..))
 
 data Value
   = VInt Integer

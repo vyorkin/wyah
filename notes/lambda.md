@@ -102,7 +102,9 @@ YR
   = RYR = RRYR = R…RYR
 ```
 
+```
 Y = SSK(S(K(SS(S(SSK))))K)
+```
 
 
 ```

@@ -1,4 +1,4 @@
-module Wyah.Untyped.Pretty
+module Wyah.Chapter4.Pretty
   ( render
   , pp
   ) where
@@ -9,7 +9,7 @@ import Data.Text.Prettyprint.Doc (
   layoutSmart, defaultLayoutOptions)
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 
-import Wyah.Untyped.Syntax (Expr(..), Name(..), Lit(..))
+import Wyah.Chapter4.Syntax (Expr(..), Name(..), Lit(..))
 
 -- | Pretty prints expression 'Expr'.
 render :: Expr -> Text
