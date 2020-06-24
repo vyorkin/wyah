@@ -28,11 +28,14 @@ library
                          Wyah.Untyped.Pretty
                          Wyah.Untyped.Eval
 
+                       Sandbox.Prettyprint1
+
   build-depends:       base
                      , text
                      , utf8-string
                      , bytestring
                      , containers
+                     , mtl
                      , prettyprinter
 
   ghc-options:         -Wall
@@ -59,6 +62,7 @@ library
                        TypeApplications
                        ViewPatterns
                        NoStarIsType
+                       BlockArguments
 
 executable wyah
   hs-source-dirs:      app

@@ -1,3 +1,5 @@
+# Lambda calculus
+
 * Open terms - contains free variables
 * Closed terms (combinators) - doesn't contain free variables
 

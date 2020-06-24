@@ -1,9 +1,17 @@
 module Wyah.Untyped.Syntax
   ( Expr(..)
   , Lit(..)
+  , Name(..)
   ) where
 
-type Name = String
+import Data.Text (Text)
+import Data.Text.Prettyprint.Doc (Pretty(..))
+
+newtype Name = Name Text
+  deriving (Eq, Show)
+
+instance Pretty Name where
+  pretty (Name s) = pretty s
 
 data Expr
   = EVar Name
