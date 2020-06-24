@@ -32,6 +32,7 @@ library
                          Wyah.Chapter5.Syntax
                          Wyah.Chapter5.Type
                          Wyah.Chapter5.Eval
+                         Wyah.Chapter5.Lexer
 
                        Sandbox.Prettyprint1
 
@@ -42,6 +43,11 @@ library
                      , containers
                      , mtl
                      , prettyprinter
+                     -- programs (lexers) produced by alex use array package
+                     , array
+
+  build-tool-depends:  alex:alex
+                     , happy:happy
 
   ghc-options:         -Wall
                        -Wincomplete-uni-patterns
