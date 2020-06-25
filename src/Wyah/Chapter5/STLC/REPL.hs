@@ -49,7 +49,7 @@ output :: Expr -> Text
 output e = case checkTop Env.empty e of
   Left err ->
        Text.pack (show e)
-    <> "\nerror:\n"
+    <> "\nError: "
     <> errorText err
   Right t ->
     let (r, es) = runEval e
@@ -59,9 +59,9 @@ output e = case checkTop Env.empty e of
        Right re -> ppResult e re t reds
 
 ppError :: String -> Text -> Text
-ppError msg reds = 
+ppError msg reds =
      Text.pack msg
-  <> "\nreductions:\n"
+  <> "\nReductions:\n"
   <> reds
 
 ppResult :: Expr -> Value -> Type -> Text -> Text
@@ -73,13 +73,8 @@ ppResult e r t reds =
   <> Text.pack (show r)
   <> " : "
   <> prettyType t
-  <> "\nreductions:\n"
+  <> "\nReductions:\n"
   <> reds
 
 parseExpr :: String -> Either String Expr
-parseExpr input = runExcept $ do
-  toks <- Lexer.scan input
-  parse toks
-
--- parseTokens :: String -> Either String [Token]
--- parseTokens = runExcept . Lexer.scan
+parseExpr input = runExcept $ Lexer.scan input >>= parse

@@ -4,10 +4,11 @@ module Wyah.Chapter5.STLC.Pretty
   ) where
 
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc (Doc, Pretty(..), (<+>), parens, layoutSmart, defaultLayoutOptions)
-import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
+import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle, renderStrict)
+import Data.Text.Prettyprint.Doc (Doc, Pretty(..), (<+>), parens, annotate, layoutSmart, defaultLayoutOptions)
 
 import Wyah.Chapter5.STLC.Syntax (Expr(..), Lit(..), Type(..))
+import qualified Wyah.Chapter5.STLC.Pretty.Style as Style
 
 -- | Pretty prints expression 'Expr'.
 prettyExpr :: Expr -> Text
@@ -23,19 +24,21 @@ prettyType =
   . layoutSmart defaultLayoutOptions
   . ppType 0
 
-ppExpr :: Int -> Expr -> Doc acc
-ppExpr _ (EVar v) = pretty v
-ppExpr _ (ELit (LInt n)) = pretty n
-ppExpr _ (ELit (LBool b)) = pretty b
+ppExpr :: Int -> Expr -> Doc AnsiStyle
+ppExpr _ (EVar v) = annotate Style.var $ pretty v
+ppExpr _ (ELit (LInt n)) = annotate Style.lit $ pretty n
+ppExpr _ (ELit (LBool b)) = annotate Style.lit $ pretty b
 ppExpr d (EApp e1 e2) = parensIf (d > 0) $
   ppExpr (d + 1) e1 <+> ppExpr d e2
 ppExpr d (ELam (n, t) e) = parensIf (d > 0) $
-      pretty '\\' <> parens (pretty n <+> ty)
-  <+> pretty '.'
+      annotate Style.lam (pretty '\\') <> parens (pretty n <+> ty)
+  <+> annotate Style.dot (pretty '.')
   <+> ppExpr (d + 1) e
-  where ty = pretty ':' <+> ppType d t
+  where
+    ty =  annotate Style.colon (pretty ':')
+      <+> annotate Style.ty (ppType d t)
 ppExpr d (EOp op x y) = parensIf (d > 0) $
-  ppExpr (d + 1) x <+> pretty op <+> ppExpr (d + 1) y
+  ppExpr (d + 1) x <+> annotate Style.binOp (pretty op) <+> ppExpr (d + 1) y
 
 ppType :: Int -> Type -> Doc ann
 ppType p = \case

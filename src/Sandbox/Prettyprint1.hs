@@ -1,8 +1,11 @@
 module Sandbox.Prettyprint1 where
 
+import System.IO (stdout)
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
+import Data.Text.Prettyprint.Doc.Render.Text (renderIO)
 import Data.Text.Prettyprint.Doc.Util (putDocW)
+import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle, color, Color(..), bold, underlined)
 
 -- (x <+> y) concatenates document x and y with a space in between.
 --
@@ -30,6 +33,18 @@ prettyDecl n tys = pretty n <+> prettyType tys
 
 doc :: Doc ann
 doc = prettyDecl ("example" :: Text) ["Int", "Bool", "Char", "IO ()"]
+
+style :: AnsiStyle
+style = color Green <> bold
+
+styledDoc :: Doc AnsiStyle
+styledDoc = annotate style "hello world"
+
+render :: Doc AnsiStyle -> IO ()
+render = renderIO stdout . layoutPretty defaultLayoutOptions
+
+doc' :: Doc AnsiStyle
+doc' = annotate (color Red) ("red" <+> align (vsep [annotate (color Blue <> underlined) ("blue+u" <+> annotate bold "bold" <+> "blue+u"), "red"]))
 
 ex1 :: IO ()
 ex1 = putDocW 80 doc

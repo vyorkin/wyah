@@ -54,9 +54,9 @@ fact : fact atom { EApp $1 $2 }
 
 atom : '(' expr ')' { $2 }
      | NUM          { ELit (LInt $1) }
-     | VAR          { EVar (Name (Text.pack $1)) }
      | true         { ELit (LBool True) }
      | false        { ELit (LBool False) }
+     | VAR          { EVar (Name (Text.pack $1)) }
 
 type : '(' type ')'   { $2 }
      | Int            { TInt }

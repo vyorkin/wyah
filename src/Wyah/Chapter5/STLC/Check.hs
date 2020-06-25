@@ -75,8 +75,8 @@ check = \case
 --   (ELit (LInt 2))
 
 assertApp :: (Expr, Type) -> (Expr, Type) -> Check Type
-assertApp (_, (TArr t1 _)) (_, t2)
-  | t1 == t2  = pure t2
+assertApp (_, (TArr t1 tr)) (_, t2)
+  | t1 == t2  = pure tr
   | otherwise = throwError $ Mismatch t2 t1
 assertApp et1 et2 = throwError $ NotFunction et1 et2
 

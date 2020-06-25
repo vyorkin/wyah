@@ -16,13 +16,13 @@ import qualified Wyah.Chapter5.STLC.Env as Env
 type Eval a = ExceptT String (Writer [Expr]) a
 
 runEval :: Expr -> (Either String Value, [Expr])
-runEval expr = runWriter $ runExceptT (eval Env.empty expr)
+runEval = runWriter . runExceptT . eval Env.empty
 
 eval :: VEnv -> Expr -> Eval Value
 eval env expr = case expr of
   ELit (LInt x)  -> pure $ VInt x
   ELit (LBool x) -> pure $ VBool x
-  EVar (Name n)  -> (lift $ tell [expr]) >> pure (env ! n)
+  EVar (Name n)  -> pure (env ! n)
   ELam (Name n, _) e -> pure (VClosure n e env)
   EApp e1 e2 -> do
     l <- eval env e1

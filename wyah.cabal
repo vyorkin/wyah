@@ -42,6 +42,7 @@ library
                          Wyah.Chapter5.STLC.Env
                          Wyah.Chapter5.STLC.Eval
                          Wyah.Chapter5.STLC.Pretty
+                         Wyah.Chapter5.STLC.Pretty.Style
                          Wyah.Chapter5.STLC.Lexer
                          Wyah.Chapter5.STLC.Parser
                          Wyah.Chapter5.STLC.Check
@@ -56,6 +57,7 @@ library
                      , containers
                      , mtl
                      , prettyprinter
+                     , prettyprinter-ansi-terminal
                      -- programs (lexers) produced by alex use array package
                      , array
 

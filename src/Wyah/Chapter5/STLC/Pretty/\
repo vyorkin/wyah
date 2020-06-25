@@ -1,0 +1,10 @@
+module Wyah.Chapter5.STLC.Pretty.Style
+  ( name
+  , var
+  , binOp
+  ) where
+
+import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle, color, Color(..), bold, underlined)
+
+name :: AnsiStyle
+name = color Green
