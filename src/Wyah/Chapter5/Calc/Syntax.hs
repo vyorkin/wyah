@@ -1,4 +1,4 @@
-module Wyah.Chapter5.Syntax
+module Wyah.Chapter5.Calc.Syntax
   ( Expr(..)
   ) where
 

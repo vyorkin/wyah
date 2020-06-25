@@ -20,7 +20,7 @@ import Control.Monad.Writer (WriterT, runWriterT, tell)
 import Wyah.Chapter4.Syntax (Expr(..), Lit(..), Name(..))
 
 data Value
-  = VInt Integer
+  = VInt Int
   | VBool Bool
   | VClosure Text Expr Scope
 
@@ -54,7 +54,7 @@ runEval x = evalState (runWriterT (eval emptyScope x)) (EvalState 0)
 
 eval :: Scope -> Expr -> Eval Value
 eval scope expr = case expr of
-  ELit (LInt x)   -> pure $ VInt (fromIntegral x)
+  ELit (LInt x)   -> pure $ VInt x
   ELit (LBool x)  -> pure $ VBool x
   EVar (Name n)   -> log expr >> pure (scope ! n)
   ELam (Name n) e -> inc $ pure (VClosure n e scope)

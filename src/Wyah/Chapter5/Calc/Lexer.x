@@ -1,5 +1,5 @@
 {
-module Wyah.Chapter5.Lexer
+module Wyah.Chapter5.Calc.Lexer
   ( P
   , Token(..)
   , readToken

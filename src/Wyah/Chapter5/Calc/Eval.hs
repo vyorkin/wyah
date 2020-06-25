@@ -1,10 +1,10 @@
-module Wyah.Chapter5.Eval
+module Wyah.Chapter5.Calc.Eval
   ( eval
   ) where
 
 import Data.Maybe (fromMaybe)
 
-import Wyah.Chapter5.Syntax (Expr(..))
+import Wyah.Chapter5.Calc.Syntax (Expr(..))
 
 -- Progress -- If an expression is well typed then either it is
 -- a value, or it can be further evaluated by an available

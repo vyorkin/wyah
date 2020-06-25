@@ -29,11 +29,23 @@ library
                          Wyah.Chapter4.Eval
 
                        Wyah.Chapter5
-                         Wyah.Chapter5.Syntax
-                         Wyah.Chapter5.Type
-                         Wyah.Chapter5.Eval
-                         Wyah.Chapter5.Lexer
-                         Wyah.Chapter5.Parser
+                         Wyah.Chapter5.Calc.Syntax
+                         Wyah.Chapter5.Calc.Type
+                         Wyah.Chapter5.Calc.Eval
+                         Wyah.Chapter5.Calc.Lexer
+                         Wyah.Chapter5.Calc.Parser
+                         Wyah.Chapter5.Calc.Pretty
+                         Wyah.Chapter5.Calc.REPL
+
+                         Wyah.Chapter5.STLC.Syntax
+                         Wyah.Chapter5.STLC.Types
+                         Wyah.Chapter5.STLC.Env
+                         Wyah.Chapter5.STLC.Eval
+                         Wyah.Chapter5.STLC.Pretty
+                         Wyah.Chapter5.STLC.Lexer
+                         Wyah.Chapter5.STLC.Parser
+                         Wyah.Chapter5.STLC.Check
+                         Wyah.Chapter5.STLC.REPL
 
                        Sandbox.Prettyprint1
 
