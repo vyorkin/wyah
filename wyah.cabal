@@ -32,6 +32,7 @@ library
                          Wyah.Chapter5.Calc.Syntax
                          Wyah.Chapter5.Calc.Type
                          Wyah.Chapter5.Calc.Eval
+                         Wyah.Chapter5.Calc.Check
                          Wyah.Chapter5.Calc.Lexer
                          Wyah.Chapter5.Calc.Parser
                          Wyah.Chapter5.Calc.Pretty
@@ -48,6 +49,20 @@ library
                          Wyah.Chapter5.STLC.Check
                          Wyah.Chapter5.STLC.REPL
 
+                         Wyah.Chapter6.Lazy
+                         Wyah.Chapter6.HOAS
+                         Wyah.Chapter6.PHOAS
+                         Wyah.Chapter6.IO
+
+                         Wyah.Chapter7.Type
+                         Wyah.Chapter7.Syntax
+                         Wyah.Chapter7.Lexer
+                         Wyah.Chapter7.Parser
+                         Wyah.Chapter7.Env
+                         Wyah.Chapter7.REPL
+                         Wyah.Chapter7.Infer
+                         Wyah.Chapter7.Eval
+
                        Sandbox.Prettyprint1
 
   build-depends:       base
@@ -60,6 +75,8 @@ library
                      , prettyprinter-ansi-terminal
                      -- programs (lexers) produced by alex use array package
                      , array
+                     , typed-process
+                     , repline
 
   build-tool-depends:  alex:alex
                      , happy:happy

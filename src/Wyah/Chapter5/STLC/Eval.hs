@@ -1,22 +1,27 @@
 module Wyah.Chapter5.STLC.Eval
   ( Eval
+  , Step(..)
   , eval
   , runEval
   ) where
 
 import Data.Map ((!))
+import Data.Text (Text)
 import Control.Monad.Writer (Writer, runWriter, tell)
 import Control.Monad.Except (ExceptT, runExceptT, throwError)
 import Control.Monad.Trans (lift)
 
 import Wyah.Chapter5.STLC.Syntax (Expr(..), Lit(..), BinOp(..), Name(..))
 import Wyah.Chapter5.STLC.Types (VEnv, Value(..))
+import Wyah.Chapter5.STLC.Pretty (prettyExpr)
 import qualified Wyah.Chapter5.STLC.Env as Env
 
-type Eval a = ExceptT String (Writer [Expr]) a
+data Step = Text :-> Value
 
-runEval :: Expr -> (Either String Value, [Expr])
-runEval = runWriter . runExceptT . eval Env.empty
+type Eval a = ExceptT String (Writer [Step]) a
+
+runEval :: Expr -> (Either String Value, [Step])
+runEval = runWriter . runExceptT . evalLog Env.empty
 
 eval :: VEnv -> Expr -> Eval Value
 eval env expr = case expr of
@@ -31,7 +36,15 @@ eval env expr = case expr of
   EOp op x y -> do
     a <- eval env x
     b <- eval env y
-    binOp op a b
+    v <- binOp op a b
+    tell [prettyExpr expr :-> v]
+    pure v
+
+evalLog :: VEnv -> Expr -> Eval Value
+evalLog env expr = do
+  v <- eval env expr
+  lift $ tell [prettyExpr expr :-> v]
+  pure v
 
 apply :: Value -> Value -> Eval Value
 apply (VClosure n e env) v = eval (Env.extend n v env) e

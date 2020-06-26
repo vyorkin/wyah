@@ -18,7 +18,7 @@ tokens :-
   $eol    ;
   $white+ ;
   "#".*   ;
-  true    n{ \_ -> TokTrue }
+  true    { \_ -> TokTrue }
   false   { \_ -> TokFalse }
   "->"    { \_ -> TokArr }
   "."     { \_ -> TokDot }
