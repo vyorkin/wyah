@@ -1,11 +1,14 @@
 {
-module Wyah.Chapter7.Parser (parse) where
+module Wyah.Chapter7.Parser
+  ( parse
+  , parseProgram
+  ) where
 
 import Prelude hiding (GT, LT, EQ)
 
 import qualified Data.Text as Text
 import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), Lit(..), BinOp(..), Var(..))
-import Wyah.Chapter7.Lexer (Alex, Lexeme(..), Token(..), lexer, showPosn)
+import Wyah.Chapter7.Lexer (Alex, Lexeme(..), Token(..), lexer, showPosn, runAlex)
 }
 
 %name parse
@@ -66,14 +69,18 @@ decl :: { Decl }
 decl : decl1 ';' { $1 }
 
 decl1 :: { Decl }
-decl1 : 'let' VAR '=' expr { Decl $2 $4 }
+decl1 : 'let' rec VAR '=' expr { Decl $3 $5 }
 
 expr :: { Expr }
-expr : 'let' opt('rec') VAR '=' expr 'in' expr { ELet $3 $5 $7 }
-     | '\\' VAR '->' expr                      { ELam (Var $2) $4 }
-     | 'fix' expr                              { EFix $2 }
-     | 'if' expr 'then' expr 'else' expr       { EIf $2 $4 $6 }
-     | form                                    { $1 }
+expr : 'let' rec VAR '=' expr 'in' expr  { ELet (Var $3) $5 $7 }
+     | '\\' VAR '->' expr                { ELam (Var $2) $4 }
+     | 'fix' expr                        { EFix $2 }
+     | 'if' expr 'then' expr 'else' expr { EIf $2 $4 $6 }
+     | form                              { $1 }
+
+rec :: { Bool }
+rec : 'rec' { True }
+    |       { False }
 
 form :: { Expr }
 form : form '+'  form { EOp Add $1 $3 }
@@ -105,4 +112,7 @@ parseError (T pos l raw) = error $
   ++ " at "
   ++ showPosn pos
   ++ maybe "" (\str -> ". Input: " ++ Text.unpack str) raw
+
+parseProgram :: String -> Either String Program
+parseProgram = flip runAlex parse
 }

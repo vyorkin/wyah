@@ -133,6 +133,9 @@ test-suite wyah-test
   import:              base
   type:                exitcode-stdio-1.0
   build-depends:       wyah
+                     , bytestring
+                     , Glob
+                     , filepath
                      , hedgehog
                      , tasty
                      , tasty-discover
@@ -140,5 +143,25 @@ test-suite wyah-test
                      , tasty-expected-failure
                      , tasty-hedgehog
                      , doctest
+  build-tool-depends:  tasty-discover:tasty-discover
   hs-source-dirs:      test
+  other-modules:       Wyah.Chapter7.ParserTest
   main-is:             Driver.hs
+  ghc-options:         -Wall
+                       -threaded
+                       -rtsopts
+                       -with-rtsopts=-N
+                       -Wincomplete-uni-patterns
+                       -Wincomplete-record-updates
+                       -Wcompat
+                       -Widentities
+                       -Wredundant-constraints
+                       -fhide-source-paths
+                       -Wmissing-export-lists
+                       -Wpartial-fields
+                       -Wmissing-home-modules
+                       -- Our test convention for HUnit would make it
+                       -- unnecessarily verbose to add the signature of each test
+                       -fno-warn-missing-signatures
+                       -- Delegate to Tasty to discover tests
+                       -fno-warn-missing-export-lists

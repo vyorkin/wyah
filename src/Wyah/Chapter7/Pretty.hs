@@ -5,10 +5,10 @@ module Wyah.Chapter7.Pretty
 
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle, renderStrict)
-import Data.Text.Prettyprint.Doc (Doc, Pretty(..), (<+>), parens, annotate, layoutSmart, defaultLayoutOptions)
+import Data.Text.Prettyprint.Doc (Doc, Pretty(..), (<+>), annotate, layoutSmart, defaultLayoutOptions)
 
 import Wyah.Chapter7.Type (Type(..))
-import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), Lit(..), Var(..))
+import Wyah.Chapter7.Syntax (Expr(..))
 import qualified Wyah.Chapter7.Pretty.Style as Style
 import Wyah.Chapter7.Pretty.Utils (parensIf)
 

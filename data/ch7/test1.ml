@@ -1,4 +1,0 @@
--- Booleans
-
-let T x y = x;
-let F x y = y;

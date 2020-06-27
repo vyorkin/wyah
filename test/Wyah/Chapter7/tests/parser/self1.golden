@@ -1,0 +1,1 @@
+Program [Decl "f" (EApp (ELam (Var {unVar = "x"}) (EVar (Var {unVar = "x"}))) (ELam (Var {unVar = "x"}) (EVar (Var {unVar = "x"}))))]

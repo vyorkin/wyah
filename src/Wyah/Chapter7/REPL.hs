@@ -6,9 +6,6 @@ module Wyah.Chapter7.REPL
 
   , hoistErr
 
-    -- * Parsing
-  , parse
-
     -- * Execution
   , exec
 
@@ -49,6 +46,7 @@ import Wyah.Chapter7.Infer (TypeEnv)
 import Wyah.Chapter7.Env (Env(..))
 import qualified Wyah.Chapter7.Env as Env
 import qualified Wyah.Chapter7.Lexer as Lexer
+import Wyah.Chapter7.Parser (parseProgram)
 import qualified Wyah.Chapter7.Parser as Parser
 
 type Repl a = HaskelineT (StateT Env IO) a
@@ -57,12 +55,6 @@ hoistErr :: Show e => Either e a -> Repl a
 hoistErr (Right v)  = pure v
 hoistErr (Left err) = liftIO (print err) >> abort
 
--- Parsing
-
-parse :: String -> Either String Program
-parse str = Lexer.runAlex str Parser.parse
-
--- Execution
 
 cmd :: String -> Repl ()
 cmd = exec True
@@ -70,7 +62,7 @@ cmd = exec True
 exec :: Bool -> String -> Repl ()
 exec update source = do
   env <- get
-  program <- hoistErr $ parse source
+  program <- hoistErr $ parseProgram source
   pure ()
 
 -- Commands

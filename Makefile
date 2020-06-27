@@ -1,25 +1,29 @@
 GHC_OPTIONS := --ghc-options='-fdiagnostics-color=never -ferror-spans -fhide-source-paths' # -fprint-unicode-syntax
 
 dev: all
-	ghcid --restart=src/Wyah/Chapter7/Lexer.x --restart=src/Wyah/Chapter7/Parser.y  --command="cabal new-repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
+	ghcid --restart=src/Wyah/Chapter7/Lexer.x --restart=src/Wyah/Chapter7/Parser.y  --command="cabal repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
 repl:
-	cabal new-repl $(GHC_OPTIONS)
+	cabal repl $(GHC_OPTIONS)
 
 all:
-	cabal new-build $(GHC_OPTIONS) all
+	cabal build $(GHC_OPTIONS) all
 clean:
-	cabal new-clean
+	cabal clean
 check:
-	cabal new-check
+	cabal check
+test:
+	cabal test
+test-accept:
+	cabal test --test-options=--accept
 tags:
 	rm -f tags codex.tags
 	codex update --force
 	haskdogs --hasktags-args "-b"
 prof:
-	cabal new-configure --enable-profiling
+	cabal configure --enable-profiling
 noprof:
-	cabal new-configure --disable-profiling
+	cabal configure --disable-profiling
 hoogle:
 	hoogle server --local
 
-.PHONY: dev repl clean all check tags prof noprof hoogle
+.PHONY: dev repl clean all test check tags prof noprof hoogle

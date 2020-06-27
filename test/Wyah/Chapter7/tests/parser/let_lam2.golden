@@ -1,0 +1,1 @@
+Program [Decl "f" (ELam (Var {unVar = "y"}) (EOp Sub (EVar (Var {unVar = "y"})) (EApp (ELam (Var {unVar = "z"}) (EOp Mul (EVar (Var {unVar = "z"})) (ELit (LInt 2)))) (EVar (Var {unVar = "y"})))))]
