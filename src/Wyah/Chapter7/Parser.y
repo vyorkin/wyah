@@ -69,11 +69,11 @@ decl1 :: { Decl }
 decl1 : 'let' VAR '=' expr { Decl $2 $4 }
 
 expr :: { Expr }
-expr : 'let' VAR '=' expr 'in' expr      { EApp (ELam (Var $2) $6) $4 }
-     | '\\' VAR '->' expr                { ELam (Var $2) $4 }
-     | 'fix' expr                        { EFix $2 }
-     | 'if' expr 'then' expr 'else' expr { EIf $2 $4 $6 }
-     | form                              { $1 }
+expr : 'let' opt('rec') VAR '=' expr 'in' expr { ELet $3 $5 $7 }
+     | '\\' VAR '->' expr                      { ELam (Var $2) $4 }
+     | 'fix' expr                              { EFix $2 }
+     | 'if' expr 'then' expr 'else' expr       { EIf $2 $4 $6 }
+     | form                                    { $1 }
 
 form :: { Expr }
 form : form '+'  form { EOp Add $1 $3 }
