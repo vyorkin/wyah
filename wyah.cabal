@@ -58,10 +58,13 @@ library
                          Wyah.Chapter7.Syntax
                          Wyah.Chapter7.Lexer
                          Wyah.Chapter7.Parser
+                         Wyah.Chapter7.Pretty
+                           Wyah.Chapter7.Pretty.Style
+                           Wyah.Chapter7.Pretty.Utils
                          Wyah.Chapter7.Env
-                         Wyah.Chapter7.REPL
                          Wyah.Chapter7.Infer
                          Wyah.Chapter7.Eval
+                         Wyah.Chapter7.REPL
 
                        Sandbox.Prettyprint1
 
@@ -138,3 +141,17 @@ executable wyah
                        TupleSections
                        TypeApplications
                        ViewPatterns
+
+test-suite wyah-test
+  import:              base
+  type:                exitcode-stdio-1.0
+  build-depends:       wyah
+                     , hedgehog
+                     , tasty
+                     , tasty-discover
+                     , tasty-golden
+                     , tasty-expected-failure
+                     , tasty-hedgehog
+                     , doctest
+  hs-source-dirs:      test
+  main-is:             Driver.hs

@@ -104,7 +104,7 @@ data Token = T
   !(Maybe Text) -- Raw matching string
 
 instance Show Token where
-  show (T _ LEOF _) = "Token EOF"
+  show (T _ LEOF _)  = "Token EOF"
   show (T pos l str) = "Token "
     ++ show l
     ++ " " ++ showPosn pos ++ " "
@@ -114,10 +114,9 @@ posn :: Token -> AlexPosn
 posn (T pos _ _) = pos
 
 mkT :: Lexeme -> AlexInput -> Int -> Alex Token
-mkT lex (pos, _, _, str) len = pure $ T pos lex raw
-  where
-    raw :: Maybe Text
-    raw = Just $ Text.pack (take len str)
+mkT lex (pos, _, _, str) len = pure $ T pos lex raw where
+  raw :: Maybe Text
+  raw = Just $ Text.pack (take len str)
 
 isEOF :: Token -> Bool
 isEOF (T _ lex _) = lex == LEOF
@@ -205,16 +204,23 @@ alexInitUserState :: AlexUserState
 alexInitUserState = AlexUserState
   { lexerStringState   = False
   , lexerStringValue   = ""
-  , parserCurrentToken = T undefined LEOF Nothing
+  , parserCurrentToken = T dummyPosn LEOF Nothing
   , parserPos          = Nothing
   }
+
+-- -----------------------------------------------------------------------------
+-- Helper/utility definitions
+-- -----------------------------------------------------------------------------
+
+dummyPosn :: AlexPosn
+dummyPosn = AlexPn 0 0 0
 
 -- -----------------------------------------------------------------------------
 -- Definition needed by Alex
 -- -----------------------------------------------------------------------------
 
 alexEOF :: Alex Token
-alexEOF = pure $ T undefined LEOF Nothing
+alexEOF = pure $ T dummyPosn LEOF Nothing
 
 -- -----------------------------------------------------------------------------
 -- Execution
