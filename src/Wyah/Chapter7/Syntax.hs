@@ -19,7 +19,7 @@ data Decl = Decl Text Expr
   deriving (Eq, Show)
 
 newtype Var = Var Text
-  deriving (Eq, Read, Show)
+  deriving (Eq, Ord, Read, Show)
 
 varName :: Var -> Text
 varName (Var x) = x

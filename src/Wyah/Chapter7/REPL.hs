@@ -2,7 +2,6 @@
 
 module Wyah.Chapter7.REPL
   ( Repl
-  , Env(..)
 
   , hoistErr
 
@@ -42,19 +41,17 @@ import System.Exit (exitSuccess)
 
 import Wyah.Chapter7.Syntax (Program, Expr, Var(..), varName)
 import Wyah.Chapter7.Eval (TermEnv)
-import Wyah.Chapter7.Infer (TypeEnv)
-import Wyah.Chapter7.Env (Env(..))
-import qualified Wyah.Chapter7.Env as Env
+import Wyah.Chapter7.Ctx (Ctx(..))
+import qualified Wyah.Chapter7.Ctx as Ctx
 import qualified Wyah.Chapter7.Lexer as Lexer
 import Wyah.Chapter7.Parser (parseProgram)
 import qualified Wyah.Chapter7.Parser as Parser
 
-type Repl a = HaskelineT (StateT Env IO) a
+type Repl a = HaskelineT (StateT Ctx IO) a
 
 hoistErr :: Show e => Either e a -> Repl a
 hoistErr (Right v)  = pure v
 hoistErr (Left err) = liftIO (print err) >> abort
-
 
 cmd :: String -> Repl ()
 cmd = exec True
@@ -93,7 +90,7 @@ main = do
     _ -> putStrLn "invalid arguments"
 
 run :: Repl a -> IO ()
-run init = flip evalStateT Env.empty $
+run init = flip evalStateT Ctx.empty $
   evalRepl
     (pure "kek> ")
     cmd
@@ -118,7 +115,7 @@ options =
 defaultMatcher :: MonadIO m => [(String, CompletionFunc m)]
 defaultMatcher = [(":load", fileCompleter)]
 
-completer :: (Monad m, MonadState Env m) => WordCompleter m
+completer :: (Monad m, MonadState Ctx m) => WordCompleter m
 completer n = do
   tenv <- gets typeEnv
   let defs = Text.unpack . varName <$> Map.keys tenv
@@ -126,5 +123,5 @@ completer n = do
       cmps = cmds ++ defs
   pure $ filter (List.isPrefixOf n) cmps
 
-completerStyle :: CompleterStyle (StateT Env IO)
+completerStyle :: CompleterStyle (StateT Ctx IO)
 completerStyle = Prefix (wordCompleter completer) defaultMatcher

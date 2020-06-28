@@ -79,8 +79,10 @@ library
                          Wyah.Chapter7.Pretty
                            Wyah.Chapter7.Pretty.Style
                            Wyah.Chapter7.Pretty.Utils
-                         Wyah.Chapter7.Env
+                         Wyah.Chapter7.Ctx
+                         Wyah.Chapter7.TypeEnv
                          Wyah.Chapter7.Infer
+                           Wyah.Chapter7.Infer.Subst
                          Wyah.Chapter7.Eval
                          Wyah.Chapter7.REPL
 

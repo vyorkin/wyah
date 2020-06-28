@@ -30,7 +30,7 @@ instance Pretty Type where
     <+> "->" <+> pretty b
 
 newtype TVar = TV Text
-  deriving (Eq, Read, Show)
+  deriving (Eq, Ord, Read, Show)
 
 instance Pretty TVar where
   pretty (TV v) = pretty v
