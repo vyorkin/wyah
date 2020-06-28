@@ -1,0 +1,1 @@
+ELam (Var "x") (EFix (EApp (EVar (Var "x")) (ELit (LInt 0))))

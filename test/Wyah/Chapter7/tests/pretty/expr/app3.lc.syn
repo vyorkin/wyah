@@ -1,0 +1,1 @@
+EApp (EApp (EVar (Var "I")) (EApp (EVar (Var "I")) (EVar (Var "I")))) (EApp (EVar (Var "I")) (ELit (LInt 3)))

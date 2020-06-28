@@ -18,7 +18,7 @@ data Type
   = TVar !TVar
   | TCon !Text
   | !Type :-> !Type
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 infixr :->
 
@@ -30,7 +30,7 @@ instance Pretty Type where
     <+> "->" <+> pretty b
 
 newtype TVar = TV Text
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 instance Pretty TVar where
   pretty (TV v) = pretty v

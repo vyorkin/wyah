@@ -40,7 +40,7 @@ import System.Console.Repline
 import System.Environment (getArgs)
 import System.Exit (exitSuccess)
 
-import Wyah.Chapter7.Syntax (Program, Expr, Var(..))
+import Wyah.Chapter7.Syntax (Program, Expr, Var(..), varName)
 import Wyah.Chapter7.Eval (TermEnv)
 import Wyah.Chapter7.Infer (TypeEnv)
 import Wyah.Chapter7.Env (Env(..))
@@ -121,7 +121,7 @@ defaultMatcher = [(":load", fileCompleter)]
 completer :: (Monad m, MonadState Env m) => WordCompleter m
 completer n = do
   tenv <- gets typeEnv
-  let defs = Text.unpack . unVar <$> Map.keys tenv
+  let defs = Text.unpack . varName <$> Map.keys tenv
       cmds = [":load", ":browse", ":type", ":quit"]
       cmps = cmds ++ defs
   pure $ filter (List.isPrefixOf n) cmps

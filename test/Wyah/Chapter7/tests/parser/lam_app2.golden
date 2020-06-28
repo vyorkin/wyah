@@ -1,1 +1,1 @@
-Program [Decl "f" (EApp (EApp (EApp (EVar (Var {unVar = "n"})) (ELam (Var {unVar = "g"}) (EApp (EVar (Var {unVar = "h"})) (EApp (EVar (Var {unVar = "g"})) (EVar (Var {unVar = "f"})))))) (ELam (Var {unVar = "u"}) (EVar (Var {unVar = "x"})))) (EVar (Var {unVar = "I"})))]
+Program [Decl "f" (EApp (EApp (EApp (EVar (Var "n")) (ELam (Var "g") (EApp (EVar (Var "h")) (EApp (EVar (Var "g")) (EVar (Var "f")))))) (ELam (Var "u") (EVar (Var "x")))) (EVar (Var "I")))]

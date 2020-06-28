@@ -1,1 +1,1 @@
-Program [Decl "f" (EApp (EApp (EVar (Var {unVar = "I"})) (EApp (EVar (Var {unVar = "I"})) (EVar (Var {unVar = "I"})))) (EApp (EVar (Var {unVar = "I"})) (ELit (LInt 3))))]
+Program [Decl "f" (EApp (EApp (EVar (Var "I")) (EApp (EVar (Var "I")) (EVar (Var "I")))) (EApp (EVar (Var "I")) (ELit (LInt 3))))]

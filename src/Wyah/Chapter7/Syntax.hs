@@ -5,9 +5,11 @@ module Wyah.Chapter7.Syntax
   , Lit(..)
   , Var(..)
   , BinOp(..)
+  , varName
   ) where
 
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc (Pretty(..))
 
 newtype Program = Program [Decl]
@@ -16,8 +18,11 @@ newtype Program = Program [Decl]
 data Decl = Decl Text Expr
   deriving (Eq, Show)
 
-newtype Var = Var { unVar :: Text }
-  deriving (Eq, Show)
+newtype Var = Var Text
+  deriving (Eq, Read, Show)
+
+varName :: Var -> Text
+varName (Var x) = x
 
 instance Pretty Var where
   pretty (Var s) = pretty s
@@ -31,19 +36,20 @@ data Expr
   | EOp BinOp Expr Expr
   | EIf Expr Expr Expr
   | EFix Expr
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 data Lit
   = LInt Integer
   | LBool Bool
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 instance Pretty Lit where
   pretty (LInt n)  = pretty n
-  pretty (LBool b) = pretty b
+  pretty (LBool True) = "true"
+  pretty (LBool False) = "false"
 
 data BinOp = Add | Sub | Mul | Eq
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Read, Show)
 
 instance Pretty BinOp where
   pretty Add = "+"

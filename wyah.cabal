@@ -133,6 +133,7 @@ test-suite wyah-test
   import:              base
   type:                exitcode-stdio-1.0
   build-depends:       wyah
+                     , text
                      , bytestring
                      , Glob
                      , filepath
@@ -145,7 +146,11 @@ test-suite wyah-test
                      , doctest
   build-tool-depends:  tasty-discover:tasty-discover
   hs-source-dirs:      test
-  other-modules:       Wyah.Chapter7.ParserTest
+  other-modules:       Wyah.Support
+                     , Wyah.Chapter7.ParserTest
+                     , Wyah.Chapter7.PrettyTest
+                     , Wyah.Chapter7.EvalTest
+                     , Wyah.Chapter7.InferTest
   main-is:             Driver.hs
   ghc-options:         -Wall
                        -threaded

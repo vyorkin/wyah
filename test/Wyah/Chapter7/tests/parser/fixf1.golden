@@ -1,1 +1,1 @@
-Program [Decl "f" (ELam (Var {unVar = "x"}) (EFix (EApp (EVar (Var {unVar = "x"})) (ELit (LInt 0)))))]
+Program [Decl "f" (ELam (Var "x") (EFix (EApp (EVar (Var "x")) (ELit (LInt 0)))))]

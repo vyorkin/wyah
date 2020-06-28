@@ -1,0 +1,1 @@
+EApp (ELam (Var "x") (EVar (Var "x"))) (ELam (Var "x") (EVar (Var "x")))

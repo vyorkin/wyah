@@ -1,1 +1,1 @@
-Program [Decl "g" (EApp (EVar (Var {unVar = "f"})) (EApp (EVar (Var {unVar = "f"})) (EApp (EVar (Var {unVar = "f"})) (EApp (EVar (Var {unVar = "f"})) (EApp (EVar (Var {unVar = "f"})) (EVar (Var {unVar = "x"})))))))]
+Program [Decl "g" (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EVar (Var "x")))))))]
