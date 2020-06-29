@@ -2,7 +2,12 @@ module Wyah.Chapter7.Infer
   ( Infer
   , Unique(..)
 
+  , inferTop
+  , inferExpr
   , runInfer
+  , infer
+  , inferPrim
+  , inferStep
 
   , unify
   , instantiate
@@ -16,11 +21,12 @@ import qualified Data.Text as Text
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import qualified Data.List as List
 import Control.Monad.Except (ExceptT, runExceptT, throwError)
 import Control.Monad.State (State, evalState, get, put)
-import Control.Monad (replicateM)
+import Control.Monad (replicateM, foldM)
 
-import Wyah.Chapter7.Syntax (Expr(..), Var)
+import Wyah.Chapter7.Syntax (Expr(..), Var, BinOp(..), Lit(..))
 import Wyah.Chapter7.Type (Type(..), TVar(..), Scheme(..))
 import qualified Wyah.Chapter7.Type as Type
 import Wyah.Chapter7.TypeEnv (TypeEnv(..), typeOf)
@@ -30,12 +36,42 @@ import Wyah.Chapter7.Infer.Types (Infer, TypeError(..), Unique(..), initUnique)
 import Wyah.Chapter7.Infer.Subst (Subst, Substitutable(..), (|.|))
 import qualified Wyah.Chapter7.Infer.Subst as Subst
 
+inferTop :: TypeEnv -> [(Var, Expr)] -> Either TypeError TypeEnv
+inferTop env [] = Right env
+inferTop env ((var, expr):decls) =
+  case inferExpr env expr of
+    Left err -> Left err
+    Right tv -> inferTop (TypeEnv.extend var tv env) decls
+
+inferExpr :: TypeEnv -> Expr -> Either TypeError Scheme
+inferExpr env = runInfer . infer env
+
 runInfer :: Infer (Subst, Type) -> Either TypeError Scheme
 runInfer m = case evalState (runExceptT m) initUnique of
   Left err  -> Left err
   Right res -> Right $ closeOver res
 
-closeOver = undefined
+closeOver :: (Subst, Type) -> Scheme
+closeOver (s, t) = normalize sc where
+  sc = generalize TypeEnv.empty (apply s t)
+
+normalize :: Scheme -> Scheme
+normalize (Forall _ t) = Forall (snd <$> ord) (norm t)
+  where
+    ord :: [(TVar, TVar)]
+    ord = zip (List.nub $ fv t) (TV <$> typeLetters)
+
+    fv :: Type -> [TVar]
+    fv (TVar a)  = [a]
+    fv (a :-> b) = fv a ++ fv b
+    fv (TCon _)  = []
+
+    norm :: Type -> Type
+    norm (a :-> b) = norm a :-> norm b
+    norm (TCon a)  = TCon a
+    norm (TVar v)  = case lookup v ord of
+      Just x -> TVar x
+      Nothing -> error "Type variable not in signature"
 
 occursCheck :: Substitutable a => TVar -> a -> Bool
 occursCheck a t = a `Set.member` ftv t
@@ -73,16 +109,17 @@ freshType :: Infer Type
 freshType = do
   s <- get
   put s { count = count s + 1 }
-  pure $ TVar $ TV (letters !! count s)
-  where
-    letters :: [Text]
-    letters = [1..]
-          >>= flip replicateM ['a'..'z']
-          >>= pure . Text.pack
+  pure $ TVar $ TV (typeLetters !! count s)
+
+typeLetters :: [Text]
+typeLetters = [1..]
+      >>= flip replicateM ['a'..'z']
+      >>= pure . Text.pack
 
 infer :: TypeEnv -> Expr -> Infer (Subst, Type)
 infer env = \case
-  EVar v -> lookupEnv env v
+  EVar v ->
+    lookupEnv env v
   ELam v e -> do
     tv <- freshType
     let ts = Forall [] tv
@@ -103,9 +140,47 @@ infer env = \case
         env'' = TypeEnv.extend v t1' env'
     (s2, t2) <- infer env'' e
     pure (s1 |.| s2, t2)
-  -- EOp op e1 e2 -> do
+  EOp op e1 e2 ->
+    inferPrim env [e1, e2] (binOpType op)
+  EIf c t f -> do
+    tv <- freshType
+    inferPrim env [c, t, f] (Type.bool :-> tv :-> tv :-> tv)
+  EFix e -> do
+    tv <- freshType
+    inferPrim env [e] ((tv :-> tv) :-> tv)
+  ELit (LInt _)  -> pure (Subst.empty, Type.int)
+  ELit (LBool _) -> pure (Subst.empty, Type.bool)
 
+inferPrim :: TypeEnv -> [Expr] -> Type -> Infer (Subst, Type)
+inferPrim env es t = do
+  tv <- freshType
+  -- We're building an arrow type here where
+  -- - 'Subst.empty' is initial set of substitutions
+  -- - 'id' is the "last" continuation which does nothing
+  (s1, tf) <- foldM (inferStep env) (Subst.empty, id) es
+  -- 'tf' is a function which given a type of
+  -- result will build a whole arrow type (ending with that type)
+  let t' = apply s1 (tf tv)
+  s2 <- unify t' t
+  pure (s2 |.| s1, apply s2 tv)
 
+inferStep
+  :: TypeEnv
+  -> (Subst, Type -> a)
+  -> Expr
+  -> Infer (Subst, Type -> a)
+inferStep env (s, tf) e = do
+  let env' = apply s env
+  (s', t) <- infer env' e
+  let cont t' = tf $ t :-> t'
+  pure (s' |.| s, cont)
+
+binOpType :: BinOp -> Type
+binOpType = \case
+  Add -> Type.int :-> Type.int :-> Type.int
+  Sub -> Type.int :-> Type.int :-> Type.int
+  Mul -> Type.int :-> Type.int :-> Type.int
+  Eq  -> Type.int :-> Type.int :-> Type.bool
 
 -- | Looks up the local variable reference in typing
 -- environment and if found it instatiates a fresh copy.

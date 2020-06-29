@@ -16,7 +16,6 @@ data TypeError
   | InfiniteType !TVar !Type
   | UnboundVariable !String
 
-
 newtype Unique = Unique { count :: Int }
 
 initUnique :: Unique

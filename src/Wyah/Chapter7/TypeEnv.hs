@@ -3,12 +3,14 @@ module Wyah.Chapter7.TypeEnv
   , extend
   , empty
   , typeOf
+  , vars
   ) where
 
+import Data.Text (Text)
 import Data.Map (Map)
 import qualified Data.Map as Map
 
-import Wyah.Chapter7.Syntax (Var)
+import Wyah.Chapter7.Syntax (Var, varName)
 import Wyah.Chapter7.Type (Scheme)
 
 newtype TypeEnv = TypeEnv (Map Var Scheme)
@@ -21,3 +23,6 @@ extend k v (TypeEnv env) = TypeEnv (Map.insert k v env)
 
 typeOf :: TypeEnv -> Var -> Maybe Scheme
 typeOf (TypeEnv env) k = Map.lookup k env
+
+vars :: TypeEnv -> [Text]
+vars (TypeEnv env) = varName <$> Map.keys env
