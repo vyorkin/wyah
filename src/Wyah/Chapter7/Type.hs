@@ -3,10 +3,10 @@ module Wyah.Chapter7.Type
   , Type(..)
   , TVar(..)
 
+  , isArrow
+
   , int
   , bool
-
-  , isArrow
   ) where
 
 import Data.Text (Text)
@@ -45,10 +45,10 @@ instance Pretty Scheme where
      <> pretty '.'
     <+> pretty t
 
-int, bool :: Type
-int  = TCon "Int"
-bool = TCon "Bool"
-
 isArrow :: Type -> Bool
 isArrow (_ :-> _) = True
 isArrow _ = False
+
+int, bool :: Type
+int  = TCon "Int"
+bool = TCon "Bool"

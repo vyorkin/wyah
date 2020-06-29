@@ -82,6 +82,7 @@ library
                          Wyah.Chapter7.Ctx
                          Wyah.Chapter7.TypeEnv
                          Wyah.Chapter7.Infer
+                           Wyah.Chapter7.Infer.Types
                            Wyah.Chapter7.Infer.Subst
                          Wyah.Chapter7.Eval
                          Wyah.Chapter7.REPL

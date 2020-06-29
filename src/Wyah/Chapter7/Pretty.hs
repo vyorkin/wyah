@@ -46,10 +46,10 @@ ppTerminal d (ELam v e) = parensIf (d > 0) $
       annotate Style.lam (pretty '\\') <> pretty v
   <+> annotate Style.arrow "->"
   <+> ppTerminal 0 e
-ppTerminal d (ELet v e b) =
+ppTerminal d (ELet v b e) =
       annotate Style.letin "let" <+> pretty v
-  <+> annotate Style.letin "="   <+> ppTerminal d e
-  <+> annotate Style.letin "in"  <+> ppTerminal d b
+  <+> annotate Style.letin "="   <+> ppTerminal d b
+  <+> annotate Style.letin "in"  <+> ppTerminal d e
 ppTerminal _ (ELit l) = annotate Style.lit $ pretty l
 ppTerminal d (EOp Eq x y) = parensIf (d > 0) $
       ppTerminal d x

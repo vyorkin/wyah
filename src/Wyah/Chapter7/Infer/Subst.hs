@@ -2,7 +2,7 @@ module Wyah.Chapter7.Infer.Subst
   ( Subst
   , Substitutable(..)
   , empty
-  , compose
+  , (|.|)
   ) where
 
 import Data.Set (Set)
@@ -13,13 +13,18 @@ import qualified Data.Map as Map
 import Wyah.Chapter7.Type (Type(..), Scheme(..), TVar)
 import Wyah.Chapter7.TypeEnv (TypeEnv(..))
 
+-- Two operations that we'll perform quite a bit are
+-- 1) querying free variables of an expression
+-- 2) applying substitutions over expressions
+
+-- | Substitution map.
 type Subst = Map TVar Type
 
 empty :: Subst
 empty = Map.empty
 
-compose :: Subst -> Subst -> Subst
-s1 `compose` s2 = apply s1 <$> s2 `Map.union` s1
+(|.|) :: Subst -> Subst -> Subst
+s1 |.| s2 = (apply s1 <$> s2) `Map.union` s1
 
 class Substitutable a where
   apply :: Subst -> a -> a
@@ -35,33 +40,10 @@ instance Substitutable Type where
   ftv (t1 :-> t2) = ftv t1 `Set.union` ftv t2
 
 instance Substitutable Scheme where
-  -- forall a b c
-  --   . (a -> c)
-  --   -> d
-  --   -> (e -> Bool)
-  --   -> b
-
-  -- s:
-  -- a -> Bool
-  -- c -> (Bool -> Int)
-  -- d -> (Bool -> Bool)
-  -- e -> Int
-
-  -- s':
-  -- d -> (Bool -> Bool)
-  -- e -> Int
-
-  -- forall a b c
-  --   . (a -> c)
-  --   -> (Bool -> Bool)
-  --   -> (Int -> Bool)
-  --   -> b
   apply s (Forall as t) =
     let s' = foldr Map.delete s as
      in Forall as $ apply s' t
 
-  -- t = forall a b c d. (a -> b) -> (p -> q) -> c -> d
-  -- ftv(t) = [p, q]
   ftv (Forall as t) =
     ftv t `Set.difference` Set.fromList as
 
