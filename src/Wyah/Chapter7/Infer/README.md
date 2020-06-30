@@ -1,3 +1,11 @@
+Note for Russian-speaking readers:
+
+To understand more about type inference algorithm
+I recommend watching these 2 lectures:
+
+* https://www.lektorium.tv/lecture/13185
+* https://www.lektorium.tv/lecture/13208
+
 `apply(s, Forall as t):`
 
 

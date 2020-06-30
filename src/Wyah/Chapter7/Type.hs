@@ -14,10 +14,11 @@ import Data.Text.Prettyprint.Doc (Pretty(..), (<+>), hcat, punctuate)
 
 import Wyah.Chapter7.Pretty.Utils (parensIf)
 
+-- | System F type ("strong polymorphism").
 data Type
-  = TVar !TVar
-  | TCon !Text
-  | !Type :-> !Type
+  = TVar !TVar       -- ^ Universal type.
+  | TCon !Text       -- ^ Simple (builtin) type (constructor).
+  | !Type :-> !Type  -- ^ Arrow type.
   deriving (Eq, Read, Show)
 
 infixr :->

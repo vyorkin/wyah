@@ -36,8 +36,8 @@ instance Substitutable Type where
   apply s (t1 :-> t2) = apply s t1 :-> apply s t2
 
   ftv TCon{}      = Set.empty
-  ftv (TVar a)    = Set.singleton a
   ftv (t1 :-> t2) = ftv t1 `Set.union` ftv t2
+  ftv (TVar a)    = Set.singleton a
 
 instance Substitutable Scheme where
   apply s (Forall as t) =
