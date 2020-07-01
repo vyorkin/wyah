@@ -38,6 +38,7 @@ $alpha = [A-Za-z]
 
 tokens :-
 
+<0> "--".*  ;
 <0> "let"   { mkT LLet }
 <0> "rec"   { mkT LRec }
 <0> "in"    { mkT LIn  }

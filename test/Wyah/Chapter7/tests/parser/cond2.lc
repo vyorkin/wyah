@@ -1,0 +1,4 @@
+-- if-then-else
+
+let notbool x = if x then False else True;
+let eqzero x = if (x == 0) then True else False;

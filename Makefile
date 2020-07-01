@@ -4,7 +4,6 @@ dev: all
 	ghcid --restart=src/Wyah/Chapter7/Lexer.x --restart=src/Wyah/Chapter7/Parser.y  --command="cabal repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
 repl:
 	cabal repl $(GHC_OPTIONS)
-
 all:
 	cabal build $(GHC_OPTIONS) all
 clean:

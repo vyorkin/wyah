@@ -13,6 +13,7 @@ import qualified Data.Map as Map
 import Wyah.Chapter7.Syntax (Var, varName)
 import Wyah.Chapter7.Type (Scheme)
 
+-- | Typing context (basically this is our "Gamma").
 newtype TypeEnv = TypeEnv (Map Var Scheme)
 
 empty :: TypeEnv

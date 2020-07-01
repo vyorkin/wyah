@@ -2,9 +2,10 @@ module Wyah.Chapter7.Infer
   ( Infer
   , Unique(..)
 
+  , inferTop'
   , inferTop
+  , inferExpr'
   , inferExpr
-  , runInfer
   , infer
   , inferPrim
   , inferStep
@@ -18,23 +19,24 @@ module Wyah.Chapter7.Infer
 
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import qualified Data.List as List
-import Control.Monad.Except (ExceptT, runExceptT, throwError)
-import Control.Monad.State (State, evalState, get, put)
+import Control.Monad.Except (runExceptT, throwError)
+import Control.Monad.State (evalState, get, put)
 import Control.Monad (replicateM, foldM)
 
 import Wyah.Chapter7.Syntax (Expr(..), Var, BinOp(..), Lit(..))
 import Wyah.Chapter7.Type (Type(..), TVar(..), Scheme(..))
 import qualified Wyah.Chapter7.Type as Type
-import Wyah.Chapter7.TypeEnv (TypeEnv(..), typeOf)
+import Wyah.Chapter7.TypeEnv (TypeEnv(..))
 import qualified Wyah.Chapter7.TypeEnv as TypeEnv
 
 import Wyah.Chapter7.Infer.Types (Infer, TypeError(..), Unique(..), initUnique)
 import Wyah.Chapter7.Infer.Subst (Subst, Substitutable(..), (|.|))
 import qualified Wyah.Chapter7.Infer.Subst as Subst
+
+inferTop' :: [(Var, Expr)] -> Either TypeError TypeEnv
+inferTop' = inferTop TypeEnv.empty
 
 inferTop :: TypeEnv -> [(Var, Expr)] -> Either TypeError TypeEnv
 inferTop env [] = Right env
@@ -42,6 +44,9 @@ inferTop env ((var, expr):decls) =
   case inferExpr env expr of
     Left err -> Left err
     Right tv -> inferTop (TypeEnv.extend var tv env) decls
+
+inferExpr' :: Expr -> Either TypeError Scheme
+inferExpr' = inferExpr TypeEnv.empty
 
 inferExpr :: TypeEnv -> Expr -> Either TypeError Scheme
 inferExpr env = runInfer . infer env
@@ -55,22 +60,22 @@ closeOver :: (Subst, Type) -> Scheme
 closeOver (s, t) = normalize sc where
   sc = generalize TypeEnv.empty (apply s t)
 
+-- | Normalization is just a renaming of
+-- generalized variables in a type scheme (polymorphic type).
 normalize :: Scheme -> Scheme
-normalize (Forall _ t) = Forall (snd <$> ord) (norm t)
+normalize (Forall _ t) =
+  let as = snd <$> freshFvs
+      t' = norm t
+   in Forall as t'
   where
-    ord :: [(TVar, TVar)]
-    ord = zip (List.nub $ fv t) (TV <$> typeLetters)
-
-    fv :: Type -> [TVar]
-    fv (TVar a)  = [a]
-    fv (a :-> b) = fv a ++ fv b
-    fv (TCon _)  = []
+    freshFvs :: [(TVar, TVar)]
+    freshFvs = zip (Set.toList $ ftv t) (TV <$> typeLetters)
 
     norm :: Type -> Type
     norm (a :-> b) = norm a :-> norm b
     norm (TCon a)  = TCon a
-    norm (TVar v)  = case lookup v ord of
-      Just x -> TVar x
+    norm (TVar v)  = case lookup v freshFvs of
+      Just x  -> TVar x
       Nothing -> error "Type variable not in signature"
 
 occursCheck :: Substitutable a => TVar -> a -> Bool
@@ -92,12 +97,24 @@ bind a t
   | occursCheck a t = throwError $ InfiniteType a t
   | otherwise       = pure $ Map.singleton a t
 
+-- λ> sc = Forall [TV "a", TV "b"] (TVar (TV "a") :-> TVar (TV "b"))
+-- λ> evalState (runExceptT (instantiate sc)) initUnique
+-- Right (TVar (TV "a") :-> TVar (TV "b"))
+-- λ> = evalState (runExceptT (instantiate sc)) (Unique 2)
+-- Right (TVar (TV "c") :-> TVar (TV "d"))
+
+-- | Instantiation is a converting a type scheme (polymorphic type) into
+-- a regular type by creating fresh names for each type variable that
+-- doesn't occur in the current type enviroment.
 instantiate :: Scheme -> Infer Type
 instantiate (Forall as t) = do
   as' <- freshTypes as
   let s = Map.fromList $ zip as as'
   pure $ apply s t
 
+-- | Generalization: converting a type by closing
+-- over all free type variables in a type scheme.
+-- See README.md for example.
 generalize :: TypeEnv -> Type -> Scheme
 generalize env t = Forall as t where
   as = Set.toList $ ftv t `Set.difference` ftv env
@@ -112,9 +129,10 @@ freshType = do
   pure $ TVar $ TV (typeLetters !! count s)
 
 typeLetters :: [Text]
-typeLetters = [1..]
-      >>= flip replicateM ['a'..'z']
-      >>= pure . Text.pack
+typeLetters =
+      [1..]
+  >>= flip replicateM ['a'..'z']
+  >>= pure . Text.pack
 
 infer :: TypeEnv -> Expr -> Infer (Subst, Type)
 infer env = \case

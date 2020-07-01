@@ -1,0 +1,5 @@
+-- Functions 2
+
+let twice f x = f (f x);
+let on g f = \x y -> g (f x) (f y);
+let ap f x = f (f x);

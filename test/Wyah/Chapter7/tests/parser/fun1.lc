@@ -1,0 +1,4 @@
+-- Functions 1
+
+let const x y = x;
+let compose f g = \x -> f (g x);

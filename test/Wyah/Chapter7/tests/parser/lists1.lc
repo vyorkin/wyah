@@ -1,0 +1,8 @@
+-- Lists
+
+let nil x = x;
+let cons x y = pair F (pair x y);
+let null z = z T;
+let head z = fst (snd z);
+let tail z = snd (snd z);
+let indx xs n = head (n tail xs);

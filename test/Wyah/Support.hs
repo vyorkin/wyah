@@ -1,6 +1,8 @@
 module Wyah.Support
   ( golden
   , glob
+
+  , showEither
   ) where
 
 import Data.ByteString.Lazy.Char8 (ByteString)
@@ -18,3 +20,6 @@ golden run path = do
 
 glob :: FilePath -> String -> IO [FilePath]
 glob dir pat = globDir1 (compile pat) dir
+
+showEither :: (Show a, Show b) => Either a b -> String
+showEither = either show show

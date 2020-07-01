@@ -1,0 +1,7 @@
+let iszero n = n (\x -> F) T;
+let plus m n f x = n f (m f x);
+let mult m n f = m (n f);
+let pow m n = n m;
+let pred n f x = n (\g h -> h (g f)) (\u -> x) I;
+let ack = \m -> m (\f n -> n f (f one)) succ;
+let sub m n = (n pred) m;

@@ -14,9 +14,8 @@ import Data.Text.Prettyprint.Doc (Pretty(..), (<+>), hcat, punctuate)
 
 import Wyah.Chapter7.Pretty.Utils (parensIf)
 
--- | System F type ("strong polymorphism").
 data Type
-  = TVar !TVar       -- ^ Universal type.
+  = TVar !TVar       -- ^ Type variable.
   | TCon !Text       -- ^ Simple (builtin) type (constructor).
   | !Type :-> !Type  -- ^ Arrow type.
   deriving (Eq, Read, Show)
@@ -36,7 +35,12 @@ newtype TVar = TV Text
 instance Pretty TVar where
   pretty (TV v) = pretty v
 
+-- | Type schemes model polymorphic types.
+-- Type variables bound in quantifier '[TVar]' are
+-- polymorphic across the enclosed type and can be
+-- instantiated with any type consistent with the signature.
 data Scheme = Forall [TVar] Type
+  deriving (Eq, Read, Show)
 
 instance Pretty Scheme where
   pretty (Forall [] t) = pretty t

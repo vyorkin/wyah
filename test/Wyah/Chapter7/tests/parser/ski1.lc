@@ -1,0 +1,7 @@
+let I x = x;
+let K x y = x;
+let S f g x = f x (g x);
+
+let skk = S K K;
+
+let Mu f = f (fix f);

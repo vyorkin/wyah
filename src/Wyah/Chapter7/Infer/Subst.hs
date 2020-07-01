@@ -44,6 +44,7 @@ instance Substitutable Scheme where
     let s' = foldr Map.delete s as
      in Forall as $ apply s' t
 
+  -- ftv(forall a b. (a -> c) -> d -> d) = [c, d]
   ftv (Forall as t) =
     ftv t `Set.difference` Set.fromList as
 

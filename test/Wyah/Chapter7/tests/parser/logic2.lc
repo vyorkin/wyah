@@ -1,0 +1,6 @@
+-- Logic 2
+
+let xor p q = p (q F T) q;
+let equ p q = not (xor p q);
+let nand x y = cond x (not y) T;
+let nor x y = cond x F (not y);

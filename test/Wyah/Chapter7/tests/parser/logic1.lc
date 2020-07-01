@@ -1,0 +1,6 @@
+-- Logic 1
+
+let not p = p F T;
+let and p q = p q F;
+let or p q = p T q;
+let cond p x y = p x y;

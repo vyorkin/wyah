@@ -1,0 +1,1 @@
+Program [Decl "succ" (ELam (Var "x") (ELam (Var "f") (ELam (Var "n") (EApp (EVar (Var "f")) (EApp (EApp (EVar (Var "n")) (EVar (Var "f"))) (EVar (Var "x")))))))]

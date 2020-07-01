@@ -1,0 +1,5 @@
+-- Tuples
+
+let fst p = p T;
+let snd p = p F;
+let pair a b f = f a b;

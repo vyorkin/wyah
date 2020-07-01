@@ -1,1 +1,1 @@
-Program [Decl "x" (EVar (Var "x"))]
+Program [Decl "x" (EFix (ELam (Var "x") (EVar (Var "x"))))]

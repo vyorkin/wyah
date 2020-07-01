@@ -1,7 +1,12 @@
 {
 module Wyah.Chapter7.Parser
-  ( parse
-  , parseProgram
+  ( parseProgram
+  , parseDecl
+  , parseExpr
+
+  , parseProgram'
+  , parseDecl'
+  , parseExpr'
   ) where
 
 import Prelude hiding (GT, LT, EQ)
@@ -11,7 +16,9 @@ import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), Lit(..), BinOp(..)
 import Wyah.Chapter7.Lexer (Alex, Lexeme(..), Token(..), lexer, showPosn, runAlex)
 }
 
-%name parse
+%name parseProgram program
+%name parseDecl decl
+%name parseExpr expr
 
 %tokentype { Token }
 
@@ -69,25 +76,61 @@ decl :: { Decl }
 decl : decl1 ';' { $1 }
 
 decl1 :: { Decl }
-decl1 : 'let' rec VAR '=' expr { Decl $3 $5 }
+decl1 : declfn    { $1 }
+      | declfnrec { $1 }
+      | declval   { $1 }
+
+declfn :: { Decl }
+declfn : 'let' VAR vars '=' expr { Decl $2 (foldr ELam $5 $3) }
+
+declfnrec :: { Decl }
+declfnrec : 'let' 'rec' VAR vars '=' expr { Decl $3 (EFix $ foldr ELam $6 ((Var $3) : $4)) }
+
+declval :: { Decl }
+declval : 'let' VAR '=' expr { Decl $2 $4 }
 
 expr :: { Expr }
-expr : 'let' rec VAR '=' expr 'in' expr  { ELet (Var $3) $5 $7 }
-     | '\\' VAR '->' expr                { ELam (Var $2) $4 }
-     | 'fix' expr                        { EFix $2 }
-     | 'if' expr 'then' expr 'else' expr { EIf $2 $4 $6 }
-     | form                              { $1 }
+expr : letin { $1 }
+     | lam   { $1 }
+     | fix   { $1 }
+     | cond  { $1 }
+     | form  { $1 }
+
+fix :: { Expr }
+fix : 'fix' expr { EFix $2 }
+
+cond :: { Expr }
+cond : 'if'   expr
+       'then' expr
+       'else' expr { EIf $2 $4 $6 }
+
+lam :: { Expr }
+lam : '\\' var vars '->' expr { foldr ELam $5 ($2 : $3) }
+
+letin :: { Expr }
+letin : 'let' rec var '=' expr
+         'in' expr { ELet $3 $5 $7 }
 
 rec :: { Bool }
 rec : 'rec' { True }
     |       { False }
 
+vars :: { [Var] }
+vars :          { [] }
+     | vars var { $2 : $1 }
+
+var :: { Var }
+var : VAR { Var $1 }
+
 form :: { Expr }
-form : form '+'  form { EOp Add $1 $3 }
-     | form '-'  form { EOp Sub $1 $3 }
-     | form '*'  form { EOp Mul $1 $3 }
-     | form '==' form { EOp Eq  $1 $3 }
-     | fact           { $1 }
+form : binop { $1 }
+     | fact  { $1 }
+
+binop :: { Expr }
+binop : form '+'  form { EOp Add $1 $3 }
+      | form '-'  form { EOp Sub $1 $3 }
+      | form '*'  form { EOp Mul $1 $3 }
+      | form '==' form { EOp Eq  $1 $3 }
 
 fact :: { Expr }
 fact : fact atom { EApp $1 $2 }
@@ -95,10 +138,19 @@ fact : fact atom { EApp $1 $2 }
 
 atom :: { Expr }
 atom : '(' expr ')' { $2 }
-     | 'true'       { ELit (LBool True) }
-     | 'false'      { ELit (LBool False) }
-     | NUM          { ELit (LInt (toInteger $1)) }
-     | VAR          { EVar (Var $1) }
+     | true  { ELit $1 }
+     | false { ELit $1 }
+     | num   { ELit $1 }
+     | var   { EVar $1 }
+
+true :: { Lit }
+true : 'true' { LBool True }
+
+false :: { Lit }
+false : 'false' { LBool False }
+
+num :: { Lit }
+num : NUM { LInt (toInteger $1) }
 
 {
 -- -----------------------------------------------------------------------------
@@ -113,6 +165,12 @@ parseError (T pos l raw) = error $
   ++ showPosn pos
   ++ maybe "" (\str -> ". Input: " ++ Text.unpack str) raw
 
-parseProgram :: String -> Either String Program
-parseProgram = flip runAlex parse
+parseExpr' :: String -> Either String Expr
+parseExpr' = flip runAlex parseExpr
+
+parseDecl' :: String -> Either String Decl
+parseDecl' = flip runAlex parseDecl
+
+parseProgram' :: String -> Either String Program
+parseProgram' = flip runAlex parseProgram
 }

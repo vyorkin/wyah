@@ -45,7 +45,7 @@ import Wyah.Chapter7.Ctx (Ctx(..))
 import qualified Wyah.Chapter7.TypeEnv as TypeEnv
 import qualified Wyah.Chapter7.Ctx as Ctx
 import qualified Wyah.Chapter7.Lexer as Lexer
-import Wyah.Chapter7.Parser (parseProgram)
+import Wyah.Chapter7.Parser (parseProgram', parseExpr')
 import qualified Wyah.Chapter7.Parser as Parser
 
 type Repl a = HaskelineT (StateT Ctx IO) a
@@ -60,7 +60,7 @@ cmd = exec True
 exec :: Bool -> String -> Repl ()
 exec update source = do
   env <- get
-  program <- hoistErr $ parseProgram source
+  program <- hoistErr $ parseProgram' source
   pure ()
 
 -- Commands
