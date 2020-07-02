@@ -1,0 +1,6 @@
+let indx = \n -> \xs -> head ((n tail) xs);
+let tail = \z -> snd (snd z);
+let head = \z -> fst (snd z);
+let null = \z -> z T;
+let cons = \y -> \x -> (pair F) ((pair x) y);
+let nil = \x -> x;

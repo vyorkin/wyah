@@ -1,0 +1,11 @@
+let ten = \x -> \f -> f (f (f (f (f (f (f (f (f (f x)))))))));
+let nine = \x -> \f -> f (f (f (f (f (f (f (f (f x))))))));
+let eight = \x -> \f -> f (f (f (f (f (f (f (f x)))))));
+let seven = \x -> \f -> f (f (f (f (f (f (f x))))));
+let six = \x -> \f -> f (f (f (f (f (f x)))));
+let five = \x -> \f -> f (f (f (f (f x))));
+let four = \x -> \f -> f (f (f (f x)));
+let three = \x -> \f -> f (f (f x));
+let two = \x -> \f -> f (f x);
+let one = \x -> \f -> f x;
+let zero = \x -> \f -> x;

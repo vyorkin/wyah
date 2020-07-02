@@ -1,0 +1,3 @@
+let z = (x + y) + 1;
+let y = 2;
+let x = 1;

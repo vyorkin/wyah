@@ -7,14 +7,20 @@ import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 import Test.Tasty (TestTree, testGroup)
 
-import Wyah.Chapter7.Pretty (ppExpr, ppType)
+import Wyah.Chapter7.Pretty (ppProgram, ppDecl, ppExpr, ppType)
 import Wyah.Support (glob, golden)
+
+test_ppProgram :: IO TestTree
+test_ppProgram = ppTest "ppProgram" "program" ".syn" ppProgram
+
+test_ppDecl :: IO TestTree
+test_ppDecl = ppDecl "ppDecl" "decl" ".syn" ppDecl
 
 test_ppExpr :: IO TestTree
 test_ppExpr = ppTest "ppExpr" "expr" ".syn" ppExpr
 
--- test_ppType :: IO TestTree
--- test_ppType = ppTest "ppType" "type" ".typ" ppType
+test_ppType :: IO TestTree
+test_ppType = ppTest "ppType" "type" ".typ" ppType
 
 ppTest
   :: Read a

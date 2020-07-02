@@ -1,0 +1,2 @@
+let eqzero = \x -> if x == 0 then True else False;
+let notbool = \x -> if x then False else True;

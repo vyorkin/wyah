@@ -1,0 +1,1 @@
+Program [Decl "z" (EOp Add (EOp Add (EVar (Var "x")) (EVar (Var "y"))) (ELit (LInt 1))),Decl "y" (ELit (LInt 2)),Decl "x" (ELit (LInt 1))]

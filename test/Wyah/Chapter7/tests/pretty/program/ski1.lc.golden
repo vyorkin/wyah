@@ -1,0 +1,5 @@
+let Mu = \f -> f (fix f);
+let skk = (S K) K;
+let S = \x -> \g -> \f -> (f x) (g x);
+let K = \y -> \x -> x;
+let I = \x -> x;

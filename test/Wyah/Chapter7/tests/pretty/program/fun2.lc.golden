@@ -1,0 +1,3 @@
+let ap = \x -> \f -> f (f x);
+let on = \f -> \g -> \x -> \y -> (g (f x)) (f y);
+let twice = \x -> \f -> f (f x);

@@ -9,14 +9,13 @@ module Wyah.Chapter7.Syntax
   ) where
 
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc (Pretty(..))
 
 newtype Program = Program [Decl]
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 data Decl = Decl Text Expr
-  deriving (Eq, Show)
+  deriving (Eq, Read, Show)
 
 newtype Var = Var Text
   deriving (Eq, Ord, Read, Show)

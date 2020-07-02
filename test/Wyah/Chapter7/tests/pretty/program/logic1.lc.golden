@@ -1,0 +1,4 @@
+let cond = \y -> \x -> \p -> (p x) y;
+let or = \q -> \p -> (p T) q;
+let and = \q -> \p -> (p q) F;
+let not = \p -> (p F) T;

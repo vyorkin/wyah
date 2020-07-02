@@ -1,0 +1,1 @@
+Program [Decl "fact" (EFix (ELam (Var "fact") (ELam (Var "n") (EIf (EOp Eq (EVar (Var "n")) (ELit (LInt 0))) (ELit (LInt 1)) (EOp Mul (EVar (Var "n")) (EApp (EVar (Var "fact")) (EOp Sub (EVar (Var "n")) (ELit (LInt 1)))))))))]
