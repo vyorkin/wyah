@@ -1,1 +1,0 @@
-EApp (EApp (EApp (EVar (Var "n")) (ELam (Var "g") (EApp (EVar (Var "h")) (EApp (EVar (Var "g")) (EVar (Var "f")))))) (ELam (Var "u") (EVar (Var "x")))) (EVar (Var "I"))

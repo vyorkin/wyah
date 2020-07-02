@@ -5,20 +5,20 @@ import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 import Test.Tasty (TestTree, testGroup)
 
-import Wyah.Chapter7.Infer (inferTop', inferTop, inferExpr', inferExpr)
+import Wyah.Chapter7.Infer (inferTop', inferTop, inferDecl', inferDecl, inferExpr', inferExpr)
 import Wyah.Chapter7.TypeEnv (TypeEnv(..))
 import qualified Wyah.Chapter7.TypeEnv as TypeEnv
 
 import Wyah.Support (glob, golden, showEither)
 
--- test_inferExpr :: IO TestTree
--- test_inferExpr = do
---   paths <- glob "test/Wyah/Chapter7/tests/infer/expr" "*.lc.syn"
---   tests <- mapM (golden inferExprFile) paths
---   pure $ testGroup "inferExpr" tests
+test_inferDecl :: IO TestTree
+test_inferDecl = do
+  paths <- glob "test/Wyah/Chapter7/tests/infer/decl" "*.lc.syn"
+  tests <- mapM (golden inferDeclFile) paths
+  pure $ testGroup "inferDecl" tests
 
-inferExprFile :: FilePath -> IO ByteString
-inferExprFile path = do
+inferDeclFile :: FilePath -> IO ByteString
+inferDeclFile path = do
   expr <- read <$> readFile path
-  let actual = showEither $ inferExpr' expr
+  let actual = showEither $ inferDecl' expr
   pure $ ByteString.pack actual

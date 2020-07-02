@@ -1,4 +1,4 @@
-let nor = \y -> \x -> ((cond x) F) (not y);
-let nand = \y -> \x -> ((cond x) (not y)) T;
-let equ = \q -> \p -> not ((xor p) q);
-let xor = \q -> \p -> (p ((q F) T)) q;
+let nor = \x -> \y -> ((cond x) F) (not y);
+let nand = \x -> \y -> ((cond x) (not y)) T;
+let equ = \p -> \q -> not ((xor p) q);
+let xor = \p -> \q -> (p ((q F) T)) q;

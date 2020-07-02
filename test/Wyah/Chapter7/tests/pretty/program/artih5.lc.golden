@@ -1,7 +1,7 @@
-let sub = \n -> \m -> (n pred) m;
+let sub = \m -> \n -> (n pred) m;
 let ack = \m -> (m (\f -> \n -> (n f) (f one))) succ;
-let pred = \x -> \f -> \n -> ((n (\g -> \h -> h (g f))) (\u -> x)) I;
-let pow = \n -> \m -> n m;
-let mult = \f -> \n -> \m -> m (n f);
-let plus = \x -> \f -> \n -> \m -> (n f) ((m f) x);
+let pred = \n -> \f -> \x -> ((n (\g -> \h -> h (g f))) (\u -> x)) I;
+let pow = \m -> \n -> n m;
+let mult = \m -> \n -> \f -> m (n f);
+let plus = \m -> \n -> \f -> \x -> (n f) ((m f) x);
 let iszero = \n -> (n (\x -> F)) T;

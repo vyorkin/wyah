@@ -1,1 +1,1 @@
-Program [Decl "compose" (ELam (Var "g") (ELam (Var "f") (ELam (Var "x") (EApp (EVar (Var "f")) (EApp (EVar (Var "g")) (EVar (Var "x"))))))),Decl "const" (ELam (Var "y") (ELam (Var "x") (EVar (Var "x"))))]
+Program [Decl "const" (ELam (Var "x") (ELam (Var "y") (EVar (Var "x")))),Decl "compose" (ELam (Var "f") (ELam (Var "g") (ELam (Var "x") (EApp (EVar (Var "f")) (EApp (EVar (Var "g")) (EVar (Var "x")))))))]

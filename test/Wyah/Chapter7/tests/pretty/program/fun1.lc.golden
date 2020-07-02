@@ -1,2 +1,2 @@
-let compose = \g -> \f -> \x -> f (g x);
-let const = \y -> \x -> x;
+let compose = \f -> \g -> \x -> f (g x);
+let const = \x -> \y -> x;

@@ -1,1 +1,0 @@
-Decl "fib" (EFix (ELam (Var "fib") (ELam (Var "n") (EIf (EOp Eq (EVar (Var "n")) (ELit (LInt 0))) (ELit (LInt 0)) (EIf (EOp Eq (EVar (Var "n")) (ELit (LInt 1))) (ELit (LInt 1)) (EOp Add (EApp (EVar (Var "fib")) (EOp Sub (EVar (Var "n")) (ELit (LInt 1)))) (EApp (EVar (Var "fib")) (EOp Sub (EVar (Var "n")) (ELit (LInt 2))))))))))

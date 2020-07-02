@@ -1,1 +1,0 @@
-EOp Eq (EOp Eq (EOp Eq (ELit (LBool True)) (ELit (LBool False))) (ELit (LBool False))) (ELit (LBool True))

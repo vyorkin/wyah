@@ -1,1 +1,1 @@
-Program [Decl "eqzero" (ELam (Var "x") (EIf (EOp Eq (EVar (Var "x")) (ELit (LInt 0))) (EVar (Var "True")) (EVar (Var "False")))),Decl "notbool" (ELam (Var "x") (EIf (EVar (Var "x")) (EVar (Var "False")) (EVar (Var "True"))))]
+Program [Decl "notbool" (ELam (Var "x") (EIf (EVar (Var "x")) (EVar (Var "False")) (EVar (Var "True")))),Decl "eqzero" (ELam (Var "x") (EIf (EOp Eq (EVar (Var "x")) (ELit (LInt 0))) (EVar (Var "True")) (EVar (Var "False"))))]

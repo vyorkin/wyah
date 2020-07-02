@@ -1,1 +1,1 @@
-Program [Decl "F" (ELam (Var "y") (ELam (Var "x") (EVar (Var "y")))),Decl "T" (ELam (Var "y") (ELam (Var "x") (EVar (Var "x"))))]
+Program [Decl "T" (ELam (Var "x") (ELam (Var "y") (EVar (Var "x")))),Decl "F" (ELam (Var "x") (ELam (Var "y") (EVar (Var "y"))))]

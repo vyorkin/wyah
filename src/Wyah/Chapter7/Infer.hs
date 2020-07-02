@@ -4,8 +4,13 @@ module Wyah.Chapter7.Infer
 
   , inferTop'
   , inferTop
+
+  , inferDecl'
+  , inferDecl
+
   , inferExpr'
   , inferExpr
+
   , infer
   , inferPrim
   , inferStep
@@ -25,7 +30,7 @@ import Control.Monad.Except (runExceptT, throwError)
 import Control.Monad.State (evalState, get, put)
 import Control.Monad (replicateM, foldM)
 
-import Wyah.Chapter7.Syntax (Expr(..), Var, BinOp(..), Lit(..))
+import Wyah.Chapter7.Syntax (Decl(..), Expr(..), Var(..), BinOp(..), Lit(..))
 import Wyah.Chapter7.Type (Type(..), TVar(..), Scheme(..))
 import qualified Wyah.Chapter7.Type as Type
 import Wyah.Chapter7.TypeEnv (TypeEnv(..))
@@ -44,6 +49,12 @@ inferTop env ((var, expr):decls) =
   case inferExpr env expr of
     Left err -> Left err
     Right tv -> inferTop (TypeEnv.extend var tv env) decls
+
+inferDecl' :: Decl -> Either TypeError Scheme
+inferDecl' = inferDecl TypeEnv.empty
+
+inferDecl :: TypeEnv -> Decl -> Either TypeError Scheme
+inferDecl env (Decl _ expr) = inferExpr env expr
 
 inferExpr' :: Expr -> Either TypeError Scheme
 inferExpr' = inferExpr TypeEnv.empty

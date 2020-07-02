@@ -1,1 +1,0 @@
-EApp (ELam (Var "x") (EOp Sub (EVar (Var "x")) (ELit (LInt 1)))) (ELit (LInt 2))

@@ -1,1 +1,1 @@
-Program [Decl "pair" (ELam (Var "f") (ELam (Var "b") (ELam (Var "a") (EApp (EApp (EVar (Var "f")) (EVar (Var "a"))) (EVar (Var "b")))))),Decl "snd" (ELam (Var "p") (EApp (EVar (Var "p")) (EVar (Var "F")))),Decl "fst" (ELam (Var "p") (EApp (EVar (Var "p")) (EVar (Var "T"))))]
+Program [Decl "pair" (ELam (Var "a") (ELam (Var "b") (ELam (Var "f") (EApp (EApp (EVar (Var "f")) (EVar (Var "a"))) (EVar (Var "b")))))),Decl "snd" (ELam (Var "p") (EApp (EVar (Var "p")) (EVar (Var "F")))),Decl "fst" (ELam (Var "p") (EApp (EVar (Var "p")) (EVar (Var "T"))))]

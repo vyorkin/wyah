@@ -1,1 +1,0 @@
-Decl "g" (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EVar (Var "x")))))))

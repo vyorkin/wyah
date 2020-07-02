@@ -1,1 +1,1 @@
-Program [Decl "npred" (ELam (Var "x") (EOp Sub (EVar (Var "x")) (ELit (LInt 1)))),Decl "nsucc" (ELam (Var "x") (EOp Add (EVar (Var "x")) (ELit (LInt 1))))]
+Program [Decl "nsucc" (ELam (Var "x") (EOp Add (EVar (Var "x")) (ELit (LInt 1)))),Decl "npred" (ELam (Var "x") (EOp Sub (EVar (Var "x")) (ELit (LInt 1))))]

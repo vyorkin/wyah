@@ -1,1 +1,1 @@
-let succ = \x -> \f -> \n -> f ((n f) x);
+let succ = \n -> \f -> \x -> f ((n f) x);

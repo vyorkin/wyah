@@ -1,1 +1,1 @@
-Program [Decl "until" (EFix (ELam (Var "until") (ELam (Var "x") (ELam (Var "f") (ELam (Var "p") (EIf (EApp (EVar (Var "p")) (EVar (Var "x"))) (EVar (Var "x")) (EApp (EApp (EApp (EVar (Var "until")) (EVar (Var "p"))) (EVar (Var "f"))) (EApp (EVar (Var "f")) (EVar (Var "x"))))))))))]
+Program [Decl "until" (EFix (ELam (Var "until") (ELam (Var "p") (ELam (Var "f") (ELam (Var "x") (EIf (EApp (EVar (Var "p")) (EVar (Var "x"))) (EVar (Var "x")) (EApp (EApp (EApp (EVar (Var "until")) (EVar (Var "p"))) (EVar (Var "f"))) (EApp (EVar (Var "f")) (EVar (Var "x"))))))))))]

@@ -66,7 +66,7 @@ import Wyah.Chapter7.Lexer (Alex, Lexeme(..), Token(..), lexer, showPosn, runAle
 %%
 
 program :: { Program }
-program : decls { Program $1 }
+program : decls { Program (reverse $1) }
 
 decls :: { [Decl] }
 decls : decl { [$1] }
@@ -81,10 +81,10 @@ decl1 : declfn    { $1 }
       | declval   { $1 }
 
 declfn :: { Decl }
-declfn : 'let' VAR vars '=' expr { Decl $2 (foldr ELam $5 $3) }
+declfn : 'let' VAR vars '=' expr { Decl $2 (foldr ELam $5 (reverse $3)) }
 
 declfnrec :: { Decl }
-declfnrec : 'let' 'rec' VAR vars '=' expr { Decl $3 (EFix $ foldr ELam $6 ((Var $3) : $4)) }
+declfnrec : 'let' 'rec' VAR vars '=' expr { Decl $3 (EFix $ foldr ELam $6 ((Var $3) : (reverse $4))) }
 
 declval :: { Decl }
 declval : 'let' VAR '=' expr { Decl $2 $4 }
@@ -105,7 +105,7 @@ cond : 'if'   expr
        'else' expr { EIf $2 $4 $6 }
 
 lam :: { Expr }
-lam : '\\' var vars '->' expr { foldr ELam $5 ($2 : $3) }
+lam : '\\' var vars '->' expr { foldr ELam $5 ($2 : (reverse $3)) }
 
 letin :: { Expr }
 letin : 'let' rec var '=' expr

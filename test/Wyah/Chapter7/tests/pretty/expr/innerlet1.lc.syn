@@ -1,1 +1,0 @@
-ELam (Var "x") (ELet (Var "y") (ELam (Var "z") (EVar (Var "z"))) (EVar (Var "y")))
