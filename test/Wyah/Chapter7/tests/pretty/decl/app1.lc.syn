@@ -1,0 +1,1 @@
+Decl "x" (EApp (EVar (Var "f")) (EVar (Var "x")))

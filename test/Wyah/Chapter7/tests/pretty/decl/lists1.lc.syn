@@ -1,0 +1,1 @@
+Decl "indx" (ELam (Var "n") (ELam (Var "xs") (EApp (EVar (Var "head")) (EApp (EApp (EVar (Var "n")) (EVar (Var "tail"))) (EVar (Var "xs"))))))

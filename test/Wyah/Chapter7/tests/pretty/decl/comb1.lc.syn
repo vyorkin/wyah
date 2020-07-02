@@ -1,0 +1,1 @@
+Decl "B" (ELam (Var "z") (ELam (Var "y") (ELam (Var "x") (EApp (EVar (Var "x")) (EApp (EVar (Var "y")) (EVar (Var "z")))))))

@@ -14,7 +14,7 @@ test_ppProgram :: IO TestTree
 test_ppProgram = ppTest "ppProgram" "program" ".syn" ppProgram
 
 test_ppDecl :: IO TestTree
-test_ppDecl = ppDecl "ppDecl" "decl" ".syn" ppDecl
+test_ppDecl = ppTest "ppDecl" "decl" ".syn" ppDecl
 
 test_ppExpr :: IO TestTree
 test_ppExpr = ppTest "ppExpr" "expr" ".syn" ppExpr

@@ -1,0 +1,1 @@
+let npred = \x -> x - 1;
