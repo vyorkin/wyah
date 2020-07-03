@@ -11,13 +11,7 @@ import Test.Tasty (TestTree, testGroup)
 import Wyah.Chapter7.Syntax (Program)
 import Wyah.Chapter7.Type (Type)
 import Wyah.Chapter7.Pretty (renderRaw, prettyProgram, prettyValue, prettySteps)
-import Wyah.Support (glob, golden)
-
-ppProgram :: Program -> Text
-ppProgram = renderRaw prettyProgram
-
-ppType :: Type -> Text
-ppType = renderRaw pretty
+import Wyah.Support (glob, golden, textToBs)
 
 test_ppProgram :: IO TestTree
 test_ppProgram = ppTest "ppProgram" "program" ".syn" ppProgram
@@ -41,4 +35,10 @@ ppTest group dir ext pp = do
 ppFile :: Read a => (a -> Text) -> FilePath -> IO ByteString
 ppFile pp path = do
   expr <- read <$> readFile path
-  pure $ ByteString.fromStrict $ encodeUtf8 (pp expr)
+  pure $ textToBs (pp expr)
+
+ppProgram :: Program -> Text
+ppProgram = renderRaw prettyProgram
+
+ppType :: Type -> Text
+ppType = renderRaw pretty

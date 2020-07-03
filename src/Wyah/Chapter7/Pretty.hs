@@ -85,9 +85,10 @@ prettyExpr d (EFix e) = parensIf (d > 0) $
   annotate Style.fix "fix" <+> prettyExpr (d + 1) e
 
 prettyValue :: Value -> Doc AnsiStyle
-prettyValue (VInt x)     = annotate Style.lit $ pretty x
-prettyValue (VBool x)    = annotate Style.lit $ pretty x
-prettyValue (VClosure{}) = annotate Style.closure "<<closure>>"
+prettyValue (VInt x)      = annotate Style.lit $ pretty x
+prettyValue (VBool True)  = annotate Style.lit "true"
+prettyValue (VBool False) = annotate Style.lit "false"
+prettyValue (VClosure{})  = annotate Style.closure "<<closure>>"
 
 prettySteps :: [Step] -> Doc AnsiStyle
 prettySteps = vcat . fmap prettyStep

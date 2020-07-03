@@ -3,9 +3,13 @@ module Wyah.Support
   , glob
 
   , showEither
+  , textToBs
   ) where
 
+import Data.Text (Text)
 import Data.ByteString.Lazy.Char8 (ByteString)
+import Data.Text.Encoding (encodeUtf8)
+import qualified Data.ByteString.Lazy.Char8 as ByteString
 import System.FilePath (takeBaseName, replaceExtension)
 import System.FilePath.Glob (globDir1, compile)
 
@@ -23,3 +27,6 @@ glob dir pat = globDir1 (compile pat) dir
 
 showEither :: (Show a, Show b) => Either a b -> String
 showEither = either show show
+
+textToBs :: Text -> ByteString
+textToBs = ByteString.fromStrict . encodeUtf8

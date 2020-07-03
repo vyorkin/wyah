@@ -8,6 +8,8 @@ module Wyah.Chapter7.Eval
 
   , emptyTermEnv
 
+  , runEval'
+  , runEval
   , eval
   ) where
 
@@ -45,6 +47,19 @@ instance Show Value where
   show (VInt x)   = show x
   show (VBool x)  = show x
   show VClosure{} = "<<closure>>"
+
+type Result = (Either InterpreterError Value, TermEnv, [Step])
+
+runEval' :: TermEnv -> Expr -> Either InterpreterError Value
+runEval' env expr = let (res, _, _) = runEval env "it" expr in res
+
+runEval :: TermEnv -> Text -> Expr -> Result
+runEval env name expr =
+  let (r, ss) = runWriter $ runExceptT $ eval emptyTermEnv expr
+   in (r, either (const env) extend r, ss)
+  where
+    extend :: Value -> TermEnv
+    extend v = Map.insert name v env
 
 eval :: TermEnv -> Expr -> Interpreter Value
 eval env e = case e of

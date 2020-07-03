@@ -30,7 +30,7 @@ $digit = 0-9
 $alpha = [A-Za-z]
 
 @number = [$digit]+
-@var    = $alpha($alpha|_|$digit)*
+@var    = $alpha($alpha|_|$digit|\')*
 
 -- -----------------------------------------------------------------------------
 -- Tokens

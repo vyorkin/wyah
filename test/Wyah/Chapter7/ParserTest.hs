@@ -6,7 +6,7 @@ import qualified Data.ByteString.Lazy.Char8 as ByteString
 import Test.Tasty (TestTree, testGroup)
 
 import Wyah.Chapter7.Parser (parseProgram')
-import Wyah.Support (glob, golden)
+import Wyah.Support (glob, golden, showEither)
 
 test_parser :: IO TestTree
 test_parser = do
@@ -17,5 +17,5 @@ test_parser = do
 parseFile :: FilePath -> IO ByteString
 parseFile path = do
   program <- readFile path
-  let actual = either id show (parseProgram' program)
+  let actual = showEither $ parseProgram' program
   pure $ ByteString.pack actual
