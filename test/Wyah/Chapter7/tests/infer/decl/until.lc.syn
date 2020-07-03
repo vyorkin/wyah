@@ -1,0 +1,1 @@
+Decl "until" (EFix (ELam (Var "until") (ELam (Var "p") (ELam (Var "f") (ELam (Var "x") (EIf (EApp (EVar (Var "p")) (EVar (Var "x"))) (EVar (Var "x")) (EApp (EApp (EApp (EVar (Var "until")) (EVar (Var "p"))) (EVar (Var "f"))) (EApp (EVar (Var "f")) (EVar (Var "x"))))))))))

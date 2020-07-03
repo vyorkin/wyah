@@ -1,0 +1,1 @@
+Decl "succ" (ELam (Var "n") (ELam (Var "f") (ELam (Var "x") (EApp (EVar (Var "f")) (EApp (EApp (EVar (Var "n")) (EVar (Var "f"))) (EVar (Var "x")))))))

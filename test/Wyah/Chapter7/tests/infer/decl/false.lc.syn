@@ -1,1 +1,1 @@
-Decl "F" (ELam (Var "y") (ELam (Var "x") (EVar (Var "y"))))
+Decl "F" (ELam (Var "x") (ELam (Var "y") (EVar (Var "y"))))

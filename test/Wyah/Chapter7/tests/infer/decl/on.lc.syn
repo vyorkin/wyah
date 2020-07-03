@@ -1,0 +1,1 @@
+Decl "on" (ELam (Var "g") (ELam (Var "f") (ELam (Var "x") (ELam (Var "y") (EApp (EApp (EVar (Var "g")) (EApp (EVar (Var "f")) (EVar (Var "x")))) (EApp (EVar (Var "f")) (EVar (Var "y"))))))))

@@ -1,0 +1,1 @@
+Decl "I" (ELam (Var "x") (EVar (Var "x")))

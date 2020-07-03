@@ -1,0 +1,1 @@
+Decl "f" (EOp Eq (EOp Add (EOp Sub (EOp Add (ELit (LInt 5)) (ELit (LInt 2))) (ELit (LInt 3))) (ELit (LInt 1))) (EOp Mul (EOp Mul (ELit (LInt 5)) (ELit (LInt 1))) (ELit (LInt 1))))

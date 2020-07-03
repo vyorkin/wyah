@@ -1,0 +1,1 @@
+Decl "pow" (ELam (Var "m") (ELam (Var "n") (EApp (EVar (Var "n")) (EVar (Var "m")))))

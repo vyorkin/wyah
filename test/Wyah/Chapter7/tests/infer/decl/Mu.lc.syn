@@ -1,0 +1,1 @@
+Decl "Mu" (ELam (Var "f") (EApp (EVar (Var "f")) (EFix (EVar (Var "f")))))

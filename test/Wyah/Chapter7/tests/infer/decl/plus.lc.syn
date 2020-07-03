@@ -1,0 +1,1 @@
+Decl "plus" (ELam (Var "m") (ELam (Var "n") (ELam (Var "f") (ELam (Var "x") (EApp (EApp (EVar (Var "n")) (EVar (Var "f"))) (EApp (EApp (EVar (Var "m")) (EVar (Var "f"))) (EVar (Var "x"))))))))

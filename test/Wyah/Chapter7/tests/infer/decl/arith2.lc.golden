@@ -1,0 +1,1 @@
+Forall [] (TCon "Int" :-> TCon "Int")

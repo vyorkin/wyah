@@ -1,0 +1,1 @@
+Decl "ap" (ELam (Var "f") (ELam (Var "x") (EApp (EVar (Var "f")) (EApp (EVar (Var "f")) (EVar (Var "x"))))))

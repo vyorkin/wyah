@@ -1,0 +1,1 @@
+Decl "nsucc" (ELam (Var "x") (EOp Add (EVar (Var "x")) (ELit (LInt 1))))
