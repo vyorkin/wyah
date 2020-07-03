@@ -9,6 +9,7 @@ module Wyah.Chapter7.Pretty.Style
   , cond
   , letin
   , fix
+  , closure
   ) where
 
 import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle, color, colorDull, Color(..), bold)
@@ -42,3 +43,6 @@ letin = color Red
 
 fix :: AnsiStyle
 fix = color Yellow
+
+closure :: AnsiStyle
+closure = colorDull White

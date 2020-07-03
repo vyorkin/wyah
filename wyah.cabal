@@ -139,6 +139,7 @@ test-suite wyah-test
                      , text
                      , bytestring
                      , Glob
+                     , prettyprinter
                      , filepath
                      , hedgehog
                      , tasty

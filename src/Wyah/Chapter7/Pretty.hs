@@ -1,12 +1,18 @@
 module Wyah.Chapter7.Pretty
-  ( ppProgram
-  , ppProgramTerminal
-  , ppDecl
-  , ppDeclTerminal
-  , ppExpr
-  , ppExprTerminal
-  , ppType
-  , ppTypeTerminal
+  ( renderRaw
+  , renderAnn
+
+  , render
+  , layout
+
+  , prettyProgram
+  , prettyDecl
+  , prettyExpr'
+  , prettyExpr
+  , prettyValue
+  , prettySteps
+  , prettyStep
+  , prettyInterpreterError
   ) where
 
 import Data.Text (Text)
@@ -17,38 +23,16 @@ import Data.Text.Prettyprint.Doc
   (<+>), annotate, layoutSmart, defaultLayoutOptions)
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 
-import Wyah.Chapter7.Type (Type(..))
-import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), BinOp(..))
+import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), BinOp(..), Var(..))
+import Wyah.Chapter7.Eval (InterpreterError(..), Value(..), Step(..))
 import qualified Wyah.Chapter7.Pretty.Style as Style
 import Wyah.Chapter7.Pretty.Utils (parensIf)
 
-ppProgram :: Program -> Text
-ppProgram = render renderStrict (unAnnotate . prettyProgram)
+renderRaw :: (a -> Doc AnsiStyle) -> a -> Text
+renderRaw f = render renderStrict (unAnnotate . f)
 
-ppProgramTerminal :: Program -> Text
-ppProgramTerminal = render Terminal.renderStrict prettyProgram
-
-ppDecl :: Decl -> Text
-ppDecl = render renderStrict (unAnnotate . prettyDecl)
-
-ppDeclTerminal :: Decl -> Text
-ppDeclTerminal = render Terminal.renderStrict prettyDecl
-
--- | Pretty prints 'Expr'.
-ppExpr :: Expr -> Text
-ppExpr = render renderStrict (unAnnotate . prettyExpr 0)
-
--- | Pretty prints colorful 'Expr' for ANSI terminals.
-ppExprTerminal :: Expr -> Text
-ppExprTerminal = render Terminal.renderStrict (prettyExpr 0)
-
--- | Pretty prints 'Type'.
-ppType :: Type -> Text
-ppType = render renderStrict pretty
-
--- | Pretty prints colorful 'Type' for ANSI terminals.
-ppTypeTerminal :: Type -> Text
-ppTypeTerminal = render Terminal.renderStrict pretty
+renderAnn :: (a -> Doc AnsiStyle) -> a -> Text
+renderAnn = render Terminal.renderStrict
 
 render
   :: (SimpleDocStream AnsiStyle -> a)
@@ -67,6 +51,9 @@ prettyDecl (Decl name expr) =
       annotate Style.letin "let" <+> pretty name
   <+> annotate Style.letin "="   <+> prettyExpr 0 expr
   <> ";"
+
+prettyExpr' :: Expr -> Doc AnsiStyle
+prettyExpr' = prettyExpr 0
 
 prettyExpr :: Int -> Expr -> Doc AnsiStyle
 prettyExpr _ (EVar v) = annotate Style.var $ pretty v
@@ -96,3 +83,32 @@ prettyExpr d (EIf c t f) =
   <+> annotate Style.cond "else" <+> prettyExpr d f
 prettyExpr d (EFix e) = parensIf (d > 0) $
   annotate Style.fix "fix" <+> prettyExpr (d + 1) e
+
+prettyValue :: Value -> Doc AnsiStyle
+prettyValue (VInt x)     = annotate Style.lit $ pretty x
+prettyValue (VBool x)    = annotate Style.lit $ pretty x
+prettyValue (VClosure{}) = annotate Style.closure "<<closure>>"
+
+prettySteps :: [Step] -> Doc AnsiStyle
+prettySteps = vcat . fmap prettyStep
+
+prettyStep :: Step -> Doc AnsiStyle
+prettyStep (e :>> v) = prettyExpr' e <+> "->" <+> prettyValue v
+
+prettyInterpreterError :: InterpreterError -> Doc AnsiStyle
+prettyInterpreterError (NotInScope v) =
+      "Variable"
+  <+> annotate Style.lit (pretty v)
+  <+> "is not in scope"
+prettyInterpreterError (InvalidOperation op x y) =
+      "Invalid operation"
+  <+> prettyValue x
+  <+> pretty op
+  <+> prettyValue y
+prettyInterpreterError (AppliedToNonClosure f arg) = vcat
+  [ "Tried to apply to non-function type:"
+  , prettyValue f
+  , prettyValue arg
+  ]
+prettyInterpreterError (NonBooleanCondition cond) =
+  "Non-boolean condition:" <+> prettyValue cond

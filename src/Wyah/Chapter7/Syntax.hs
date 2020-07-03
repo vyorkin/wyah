@@ -43,8 +43,8 @@ data Lit
   deriving (Eq, Read, Show)
 
 instance Pretty Lit where
-  pretty (LInt n)  = pretty n
-  pretty (LBool True) = "true"
+  pretty (LInt n)      = pretty n
+  pretty (LBool True)  = "true"
   pretty (LBool False) = "false"
 
 data BinOp = Add | Sub | Mul | Eq
