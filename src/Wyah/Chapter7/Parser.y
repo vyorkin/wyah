@@ -9,8 +9,6 @@ module Wyah.Chapter7.Parser
   , parseExpr'
   ) where
 
-import Prelude hiding (GT, LT, EQ)
-
 import qualified Data.Text as Text
 import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), Lit(..), BinOp(..), Var(..))
 import Wyah.Chapter7.Lexer (Alex, Lexeme(..), Token(..), lexer, showPosn, runAlex)

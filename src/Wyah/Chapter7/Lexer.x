@@ -11,7 +11,7 @@ module Wyah.Chapter7.Lexer
   , lexer
   ) where
 
-import Prelude hiding (GT, LT, EQ, lex)
+import Prelude hiding (lex)
 
 import Data.Text (Text)
 import qualified Data.Text as Text
