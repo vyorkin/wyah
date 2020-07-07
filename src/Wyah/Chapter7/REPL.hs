@@ -120,7 +120,7 @@ typeOf args = do
   Ctx{..} <- get
   let arg = unwords args
   case TypeEnv.typeOf typeEnv (Var $ Text.pack arg) of
-    Nothing -> exec False arg
+    Nothing -> exec False arg -- TODO: Fix (add "it" to the termEnv, refactor)
     Just scheme -> liftIO $ printDoc prettySignature (Text.pack arg, scheme)
 
 quit :: a -> Repl ()
