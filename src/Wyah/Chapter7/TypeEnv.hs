@@ -15,6 +15,7 @@ import Wyah.Chapter7.Type (Scheme)
 
 -- | Typing context (basically this is our "Gamma").
 newtype TypeEnv = TypeEnv (Map Var Scheme)
+  deriving (Semigroup)
 
 empty :: TypeEnv
 empty = TypeEnv Map.empty

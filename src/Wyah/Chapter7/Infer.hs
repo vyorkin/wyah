@@ -2,8 +2,8 @@ module Wyah.Chapter7.Infer
   ( Infer
   , Unique(..)
 
-  , inferTop'
-  , inferTop
+  , inferDecls'
+  , inferDecls
 
   , inferDecl'
   , inferDecl
@@ -30,7 +30,7 @@ import Control.Monad.Except (runExceptT, throwError)
 import Control.Monad.State (evalState, get, put)
 import Control.Monad (replicateM, foldM)
 
-import Wyah.Chapter7.Syntax (Decl(..), Expr(..), Var(..), BinOp(..), Lit(..))
+import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), Var(..), BinOp(..), Lit(..))
 import Wyah.Chapter7.Type (Type(..), TVar(..), Scheme(..))
 import qualified Wyah.Chapter7.Type as Type
 import Wyah.Chapter7.TypeEnv (TypeEnv(..))
@@ -40,15 +40,15 @@ import Wyah.Chapter7.Infer.Types (Infer, TypeError(..), Unique(..), initUnique)
 import Wyah.Chapter7.Infer.Subst (Subst, Substitutable(..), (|.|))
 import qualified Wyah.Chapter7.Infer.Subst as Subst
 
-inferTop' :: [(Var, Expr)] -> Either TypeError TypeEnv
-inferTop' = inferTop TypeEnv.empty
+inferDecls' :: [Decl] -> Either TypeError TypeEnv
+inferDecls' = inferDecls TypeEnv.empty
 
-inferTop :: TypeEnv -> [(Var, Expr)] -> Either TypeError TypeEnv
-inferTop env [] = Right env
-inferTop env ((var, expr):decls) =
+inferDecls :: TypeEnv -> [Decl] -> Either TypeError TypeEnv
+inferDecls env [] = Right env
+inferDecls env (Decl name expr:decls) =
   case inferExpr env expr of
     Left err -> Left err
-    Right tv -> inferTop (TypeEnv.extend var tv env) decls
+    Right tv -> inferDecls (TypeEnv.extend (Var name) tv env) decls
 
 inferDecl' :: Decl -> Either TypeError Scheme
 inferDecl' = inferDecl TypeEnv.empty

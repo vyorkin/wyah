@@ -77,6 +77,7 @@ decl1 :: { Decl }
 decl1 : declfn    { $1 }
       | declfnrec { $1 }
       | declval   { $1 }
+      | declit    { $1 }
 
 declfn :: { Decl }
 declfn : 'let' VAR vars '=' expr { Decl $2 (foldr ELam $5 (reverse $3)) }
@@ -86,6 +87,9 @@ declfnrec : 'let' 'rec' VAR vars '=' expr { Decl $3 (EFix $ foldr ELam $6 ((Var 
 
 declval :: { Decl }
 declval : 'let' VAR '=' expr { Decl $2 $4 }
+
+declit :: { Decl }
+declit : expr { Decl "it" $1 }
 
 expr :: { Expr }
 expr : letin { $1 }

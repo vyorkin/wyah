@@ -6,6 +6,8 @@ repl:
 	cabal repl $(GHC_OPTIONS)
 all:
 	cabal build $(GHC_OPTIONS) all
+run:
+	cabal run wyah $(GHC_OPTIONS) -- "./data/test1.lc"
 clean:
 	cabal clean
 check:
@@ -25,4 +27,4 @@ noprof:
 hoogle:
 	hoogle server --local
 
-.PHONY: dev repl clean all test check tags prof noprof hoogle
+.PHONY: dev repl clean run all test check tags prof noprof hoogle

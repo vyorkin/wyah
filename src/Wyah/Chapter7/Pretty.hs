@@ -7,6 +7,9 @@ module Wyah.Chapter7.Pretty
 
   , prettyProgram
   , prettyDecl
+  , prettyTypeEnv
+  , prettySignature
+  , prettyScheme
   , prettyExpr'
   , prettyExpr
   , prettyValue
@@ -16,6 +19,7 @@ module Wyah.Chapter7.Pretty
   ) where
 
 import Data.Text (Text)
+import qualified Data.Map as Map
 import Data.Text.Prettyprint.Doc.Render.Terminal (AnsiStyle)
 import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Terminal (renderStrict)
 import Data.Text.Prettyprint.Doc
@@ -23,7 +27,9 @@ import Data.Text.Prettyprint.Doc
   (<+>), annotate, layoutSmart, defaultLayoutOptions)
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 
-import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), BinOp(..), Var(..))
+import Wyah.Chapter7.Type (Type, Scheme)
+import Wyah.Chapter7.TypeEnv (TypeEnv(..))
+import Wyah.Chapter7.Syntax (Program(..), Decl(..), Expr(..), BinOp(..), Var(..), varName)
 import Wyah.Chapter7.Eval (InterpreterError(..), Value(..), Step(..))
 import qualified Wyah.Chapter7.Pretty.Style as Style
 import Wyah.Chapter7.Pretty.Utils (parensIf)
@@ -51,6 +57,12 @@ prettyDecl (Decl name expr) =
       annotate Style.letin "let" <+> pretty name
   <+> annotate Style.letin "="   <+> prettyExpr 0 expr
   <> ";"
+
+prettySignature :: (Text, Scheme) -> Doc AnsiStyle
+prettySignature (name, scheme) =
+      annotate Style.var (pretty name)
+  <+> annotate Style.colon ":"
+  <+> prettyScheme scheme
 
 prettyExpr' :: Expr -> Doc AnsiStyle
 prettyExpr' = prettyExpr 0
@@ -90,11 +102,20 @@ prettyValue (VBool True)  = annotate Style.lit "true"
 prettyValue (VBool False) = annotate Style.lit "false"
 prettyValue (VClosure{})  = annotate Style.closure "<<closure>>"
 
+prettyScheme :: Scheme -> Doc AnsiStyle
+prettyScheme = annotate Style.ty . pretty
+
 prettySteps :: [Step] -> Doc AnsiStyle
 prettySteps = vcat . fmap prettyStep
 
 prettyStep :: Step -> Doc AnsiStyle
 prettyStep (e :>> v) = prettyExpr' e <+> "->" <+> prettyValue v
+
+prettyTypeEnv :: TypeEnv -> Doc AnsiStyle
+prettyTypeEnv (TypeEnv env) = vcat $
+  prettySignature <$> (fmap sig $ Map.toList env)
+  where
+    sig (Var name, scheme) = (name, scheme)
 
 prettyInterpreterError :: InterpreterError -> Doc AnsiStyle
 prettyInterpreterError (NotInScope v) =

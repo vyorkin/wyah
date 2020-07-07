@@ -13,6 +13,7 @@ module Wyah.Chapter7.Eval
   , eval
   ) where
 
+import Debug.Trace (traceM)
 import Data.Text (Text)
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -55,7 +56,7 @@ runEval' env expr = let (res, _, _) = runEval env "it" expr in res
 
 runEval :: TermEnv -> Text -> Expr -> Result
 runEval env name expr =
-  let (r, ss) = runWriter $ runExceptT $ eval emptyTermEnv expr
+  let (r, ss) = runWriter $ runExceptT $ eval env expr
    in (r, either (const env) extend r, ss)
   where
     extend :: Value -> TermEnv
@@ -70,7 +71,9 @@ eval env e = case e of
   EVar var@(Var v) ->
     case Map.lookup v env of
       Just x  -> ret e x
-      Nothing -> throwError $ NotInScope var
+      Nothing -> do
+        traceM $ "term env:\n" ++ show env
+        throwError $ NotInScope var
   EOp op x y -> do
     a <- eval env x
     b <- eval env y

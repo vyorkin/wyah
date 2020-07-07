@@ -1,0 +1,21 @@
+-- Booleans
+let T x y = x;
+let F x y = y;
+
+-- SKI combinators
+let I x = x;
+let K x y = x;
+let S f g x = f x (g x);
+
+let skk = S K K;
+
+let Mu f = f (fix f);
+
+-- Other combinators
+let B x y z = x (y z);
+let C x y z = x z y;
+let W x y = x y y;
+
+-- Integer arithmetic
+let nsucc x = x + 1;
+let npred x = x - 1;
