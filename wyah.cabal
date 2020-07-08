@@ -87,18 +87,31 @@ library
                          Wyah.Chapter7.Eval
                          Wyah.Chapter7.REPL
 
+                         Wyah.Chapter8.Env
+                         Wyah.Chapter8.Monad
+                         Wyah.Chapter8.Name
+                         Wyah.Chapter8.Frontend
+                         Wyah.Chapter8.Flags
+                         Wyah.Chapter8.Type
+                         Wyah.Chapter8.Error
+                           Wyah.Chapter8.Error.SrcPos
+
                        Sandbox.Prettyprint1
 
   build-depends:       base
                      , text
                      , utf8-string
                      , bytestring
+                     , either
                      , containers
                      , mtl
                      , prettyprinter
                      , prettyprinter-ansi-terminal
                      -- programs (lexers) produced by alex use array package
                      , array
+                     , hashable
+                     , exceptions
+                     , safe-exceptions
                      , typed-process
                      , repline
 
@@ -151,10 +164,10 @@ test-suite wyah-test
   build-tool-depends:  tasty-discover:tasty-discover
   hs-source-dirs:      test
   other-modules:       Wyah.Support
-                     , Wyah.Chapter7.ParserTest
-                     , Wyah.Chapter7.PrettyTest
-                     , Wyah.Chapter7.EvalTest
-                     , Wyah.Chapter7.InferTest
+                       Wyah.Chapter7.ParserTest
+                       Wyah.Chapter7.PrettyTest
+                       Wyah.Chapter7.EvalTest
+                       Wyah.Chapter7.InferTest
   main-is:             Driver.hs
   ghc-options:         -Wall
                        -threaded

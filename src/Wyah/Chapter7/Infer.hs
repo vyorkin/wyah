@@ -114,7 +114,7 @@ bind a t
 -- λ> = evalState (runExceptT (instantiate sc)) (Unique 2)
 -- Right (TVar (TV "c") :-> TVar (TV "d"))
 
--- | Instantiation is a converting a type scheme (polymorphic type) into
+-- | Instantiation is a conversion of a type scheme (polymorphic type) into
 -- a regular type by creating fresh names for each type variable that
 -- doesn't occur in the current type enviroment.
 instantiate :: Scheme -> Infer Type
